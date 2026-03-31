@@ -925,14 +925,14 @@ body {
   margin-top: 12px;
 }
 
-/* 단어 코드 스타일 */
-.challenge-code-words {
+/* 숫자 코드 스타일 */
+.challenge-code-num {
   font-family: 'Jua', sans-serif;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
+  font-size: 2rem;
+  letter-spacing: 6px;
   color: var(--text-dark);
   background: linear-gradient(135deg, #FFF8E7, #FFE8A0);
-  padding: 14px 20px;
+  padding: 14px 24px;
   border-radius: 12px;
   border: 2px dashed var(--cheese-dark);
 }

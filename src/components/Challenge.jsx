@@ -86,7 +86,7 @@ export default function Challenge({ onGenerate, onJoin }) {
                   <h2>🎲 대결 코드 생성!</h2>
                   <p className="challenge-desc">이 코드를 친구에게 보내줘:</p>
                   <div className="challenge-code-box">
-                    <span className="challenge-code challenge-code-words">{code}</span>
+                    <span className="challenge-code challenge-code-num">{code}</span>
                     <button className="btn btn-copy" onClick={handleCopy}>
                       {copied ? '✅ 복사됨!' : '📋 복사'}
                     </button>
