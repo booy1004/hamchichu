@@ -1,10 +1,20 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 // Web Audio API로 귀여운 효과음 합성
 export default function useSound() {
   const ctxRef = useRef(null);
+  const [muted, setMuted] = useState(false);
+  const mutedRef = useRef(false);
+
+  const toggleMute = useCallback(() => {
+    setMuted(prev => {
+      mutedRef.current = !prev;
+      return !prev;
+    });
+  }, []);
 
   const getCtx = useCallback(() => {
+    if (mutedRef.current) return null;
     if (!ctxRef.current) {
       ctxRef.current = new (window.AudioContext || window.webkitAudioContext)();
     }
@@ -19,6 +29,7 @@ export default function useSound() {
   const playTone = useCallback((freq, duration, type = 'sine', volume = 0.3, detune = 0) => {
     try {
       const ctx = getCtx();
+      if (!ctx) return;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = type;
@@ -39,6 +50,7 @@ export default function useSound() {
   const playNoise = useCallback((duration = 0.05, volume = 0.15) => {
     try {
       const ctx = getCtx();
+      if (!ctx) return;
       const bufferSize = ctx.sampleRate * duration;
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
@@ -89,6 +101,7 @@ export default function useSound() {
   const playCat = useCallback(() => {
     try {
       const ctx = getCtx();
+      if (!ctx) return;
       // 애옹 메인 톤
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -123,6 +136,7 @@ export default function useSound() {
   const playShock = useCallback(() => {
     try {
       const ctx = getCtx();
+      if (!ctx) return;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'square';
@@ -172,5 +186,7 @@ export default function useSound() {
     playClear,
     playChord,
     playClick,
+    muted,
+    toggleMute,
   };
 }

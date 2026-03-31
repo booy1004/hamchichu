@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import useGameLogic from './hooks/useGameLogic';
 import useRecords from './hooks/useRecords';
+import useSound from './hooks/useSound';
 import Board from './components/Board';
 import HUD from './components/HUD';
 import Hamster from './components/Hamster';
@@ -25,14 +26,36 @@ export default function HamsterGame() {
   } = useGameLogic(difficulty);
 
   const { records, addRecord, clearRecords } = useRecords();
+  const sound = useSound();
   const totalSafe = rows * cols - mines;
+  const prevGameState = useRef(gameState);
+  const prevAction = useRef(null);
 
-  // 클리어 시 기록 저장
+  // 게임 상태 변화에 따른 사운드
   useEffect(() => {
-    if (gameState === 'won') {
+    if (gameState === 'won' && prevGameState.current !== 'won') {
+      sound.playClear();
       addRecord(difficulty, timer);
     }
+    if (gameState === 'lost' && prevGameState.current !== 'lost') {
+      sound.playCat();
+      setTimeout(() => sound.playShock(), 300);
+    }
+    prevGameState.current = gameState;
   }, [gameState]);
+
+  // 액션에 따른 사운드
+  useEffect(() => {
+    if (!lastAction || lastAction === prevAction.current) return;
+    prevAction.current = lastAction;
+
+    switch (lastAction.type) {
+      case 'reveal': sound.playEat(); break;
+      case 'flag': sound.playFlag(); break;
+      case 'unflag': sound.playUnflag(); break;
+      case 'chord': sound.playChord(); break;
+    }
+  }, [lastAction]);
 
   const handleDifficultyChange = (d) => {
     setDifficulty(d);
@@ -88,8 +111,11 @@ export default function HamsterGame() {
       </div>
 
       <div className="controls">
-        <button className="btn btn-new" onClick={() => resetGame(difficulty)}>
+        <button className="btn btn-new" onClick={() => { resetGame(difficulty); sound.playClick(); }}>
           🧀 새 게임
+        </button>
+        <button className="btn btn-mute" onClick={sound.toggleMute}>
+          {sound.muted ? '🔇' : '🔊'}
         </button>
         <div className="difficulty-selector">
           {Object.entries(DIFFICULTY_LABELS).map(([key, { label, emoji }]) => (

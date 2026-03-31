@@ -944,3 +944,12 @@
   .help-desktop { display: none; }
   .help-mobile { display: flex; }
 }
+
+/* 음소거 버튼 */
+.btn-mute {
+  background: #FFF8E7;
+  color: var(--text-dark);
+  font-size: 1.2rem;
+  padding: 6px 12px;
+  min-width: 44px;
+}
