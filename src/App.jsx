@@ -1,9 +1,12 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import useGameLogic from './hooks/useGameLogic';
+import useRecords from './hooks/useRecords';
 import Board from './components/Board';
 import HUD from './components/HUD';
 import Hamster from './components/Hamster';
 import Overlay from './components/Overlay';
+import Records from './components/Records';
+import Challenge from './components/Challenge';
 import './game.css';
 
 const DIFFICULTY_LABELS = {
@@ -18,18 +21,34 @@ export default function App() {
     board, gameState, flagCount, timer, mines, rows, cols,
     lastAction, revealedCount,
     handleClick, handleRightClick, handleDoubleClick, resetGame,
+    startWithSeed, generateChallengeCode, parseChallengeCode,
   } = useGameLogic(difficulty);
 
+  const { records, addRecord, clearRecords } = useRecords();
   const totalSafe = rows * cols - mines;
 
-  const changeDifficulty = useCallback((d) => {
-    setDifficulty(d);
-  }, []);
+  // 클리어 시 기록 저장
+  useEffect(() => {
+    if (gameState === 'won') {
+      addRecord(difficulty, timer);
+    }
+  }, [gameState]);
 
-  // difficulty 변경 시 리셋
   const handleDifficultyChange = (d) => {
-    changeDifficulty(d);
+    setDifficulty(d);
     setTimeout(() => resetGame(d), 0);
+  };
+
+  const handleGenerateChallenge = () => {
+    return generateChallengeCode();
+  };
+
+  const handleJoinChallenge = (code) => {
+    const parsed = parseChallengeCode(code);
+    if (!parsed) return false;
+    setDifficulty(parsed.difficulty);
+    setTimeout(() => startWithSeed(parsed.seed, parsed.difficulty), 0);
+    return true;
   };
 
   return (
@@ -83,6 +102,8 @@ export default function App() {
             </button>
           ))}
         </div>
+        <Records records={records} onClear={clearRecords} />
+        <Challenge onGenerate={handleGenerateChallenge} onJoin={handleJoinChallenge} />
       </div>
 
       <div className="help-text">
