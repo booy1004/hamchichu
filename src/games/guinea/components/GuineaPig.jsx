@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const BELLY_SIZES = [
@@ -17,12 +18,26 @@ function getBellyLevel(score) {
 export default function GuineaPig({ gameState, score, boxSum, boxCount }) {
   const bellyLevel = getBellyLevel(score);
   const bellySize = BELLY_SIZES[bellyLevel];
+  const [showSpeech, setShowSpeech] = useState(false);
+  const prevScore = useRef(score);
+  const timerRef = useRef(null);
+
+  // 점수 올라가면 말풍선 2초간 표시
+  useEffect(() => {
+    if (score > prevScore.current && gameState === 'playing') {
+      setShowSpeech(true);
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setShowSpeech(false), 2000);
+    }
+    prevScore.current = score;
+    return () => clearTimeout(timerRef.current);
+  }, [score, gameState]);
 
   const getExpression = () => {
     if (gameState === 'ended' && score >= 30) return 'clear';
     if (gameState === 'ended') return 'sad';
+    if (showSpeech) return 'eating';
     if (boxCount > 0 && boxSum === 10) return 'excited';
-    if (boxCount > 0) return 'thinking';
     return 'idle';
   };
 
@@ -31,7 +46,19 @@ export default function GuineaPig({ gameState, score, boxSum, boxCount }) {
   return (
     <div className="gp-container">
       <AnimatePresence mode="wait">
-        {expression === 'excited' && (
+        {showSpeech && gameState === 'playing' && (
+          <motion.div
+            key="eating-text"
+            className="gp-speech speech-excited"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.3 }}
+          >
+            뿌이뿌이~
+          </motion.div>
+        )}
+        {expression === 'excited' && !showSpeech && (
           <motion.div
             key="match-text"
             className="gp-speech speech-excited"
@@ -67,15 +94,15 @@ export default function GuineaPig({ gameState, score, boxSum, boxCount }) {
       <motion.div
         className={`gp-body-wrap gp-${expression}`}
         animate={
-          expression === 'excited'
-            ? { y: [0, -18, 0, -12, 0] }
+          expression === 'excited' || expression === 'eating'
+            ? { y: [0, -12, 0, -8, 0] }
             : expression === 'sad'
             ? { rotate: [0, 3, -3, 0] }
             : { y: [0, -2, 0] }
         }
         transition={
-          expression === 'excited'
-            ? { duration: 0.5, repeat: Infinity, repeatDelay: 0.2 }
+          expression === 'excited' || expression === 'eating'
+            ? { duration: 0.5, repeat: Infinity, repeatDelay: 0.3 }
             : { duration: 2, repeat: Infinity, ease: 'easeInOut' }
         }
       >
@@ -83,14 +110,14 @@ export default function GuineaPig({ gameState, score, boxSum, boxCount }) {
           <div className="gp-ear gp-ear-l" />
           <div className="gp-ear gp-ear-r" />
           <div className="gp-face">
-            <div className={`gp-eye gp-eye-l ${expression === 'excited' ? 'eye-sparkle' : ''} ${expression === 'clear' ? 'eye-closed' : ''} ${expression === 'sad' ? 'eye-sad' : ''}`}>
+            <div className={`gp-eye gp-eye-l ${expression === 'excited' || expression === 'eating' ? 'eye-sparkle' : ''} ${expression === 'clear' ? 'eye-closed' : ''} ${expression === 'sad' ? 'eye-sad' : ''}`}>
               {expression !== 'clear' && expression !== 'sad' && <div className="gp-pupil" />}
             </div>
-            <div className={`gp-eye gp-eye-r ${expression === 'excited' ? 'eye-sparkle' : ''} ${expression === 'clear' ? 'eye-closed' : ''} ${expression === 'sad' ? 'eye-sad' : ''}`}>
+            <div className={`gp-eye gp-eye-r ${expression === 'excited' || expression === 'eating' ? 'eye-sparkle' : ''} ${expression === 'clear' ? 'eye-closed' : ''} ${expression === 'sad' ? 'eye-sad' : ''}`}>
               {expression !== 'clear' && expression !== 'sad' && <div className="gp-pupil" />}
             </div>
             <div className="gp-nose" />
-            <div className={`gp-mouth ${expression === 'excited' ? 'mouth-open' : ''} ${expression === 'clear' ? 'mouth-happy' : ''}`} />
+            <div className={`gp-mouth ${expression === 'eating' || expression === 'excited' ? 'mouth-open' : ''} ${expression === 'clear' ? 'mouth-happy' : ''}`} />
             <div className="gp-cheek gp-cheek-l" />
             <div className="gp-cheek gp-cheek-r" />
             <div className="gp-whisker gp-wh-l1" />
