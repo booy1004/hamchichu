@@ -187,6 +187,11 @@ export default function useAppleLogic() {
       setTapFirst({ r, c });
       setDragStart({ r, c });
       setDragEnd({ r, c });
+    } else if (tapFirst.r === r && tapFirst.c === c) {
+      // 같은 셀 다시 탭 → 취소
+      setTapFirst(null);
+      setDragStart(null);
+      setDragEnd(null);
     } else {
       // 두 번째 탭 → 사각형 판정
       const start = tapFirst;
@@ -208,11 +213,16 @@ export default function useAppleLogic() {
           return s + (PAPRIKA_POINTS[cell.paprika] - 1);
         }, 0);
         setScore(prev => prev + basePoints + bonusPoints);
-      }
 
-      setTapFirst(null);
-      setDragStart(null);
-      setDragEnd(null);
+        setTapFirst(null);
+        setDragStart(null);
+        setDragEnd(null);
+      } else {
+        // 합이 10이 아니면 → 두 번째 셀을 새 첫 번째로
+        setTapFirst({ r, c });
+        setDragStart({ r, c });
+        setDragEnd({ r, c });
+      }
     }
   }, [gameState, tapFirst, getBoxCells, startTimer]);
 

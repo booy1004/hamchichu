@@ -25,7 +25,7 @@ function PaprikaIcon({ type, size = 16 }) {
   );
 }
 
-function CellComponent({ cell, isInBox, isMatch, isTapStart, onTap }) {
+function CellComponent({ cell, isInBox, isMatch, isTapStart }) {
   if (!cell.alive) return <div className="gp-cell gp-cell-dead" />;
 
   const bg = cell.paprika ? PAPRIKA_BG[cell.paprika] : undefined;
@@ -34,7 +34,6 @@ function CellComponent({ cell, isInBox, isMatch, isTapStart, onTap }) {
     <div
       className={`gp-cell gp-cell-alive ${isInBox ? 'gp-cell-inbox' : ''} ${isMatch ? 'gp-cell-match' : ''} ${isTapStart ? 'gp-cell-tap-start' : ''}`}
       style={bg ? { background: bg } : undefined}
-      onClick={(e) => { e.stopPropagation(); onTap(); }}
     >
       {cell.paprika && (
         <div className="gp-cell-paprika">
