@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function Confetti() {
@@ -25,8 +26,22 @@ function Confetti() {
   );
 }
 
-export default function Overlay({ gameState, score, onReset }) {
+export default function Overlay({ gameState, score, onReset, onSaveRecord }) {
+  const [name, setName] = useState('');
+  const [saved, setSaved] = useState(false);
   const isGood = score >= 30;
+
+  const handleSave = () => {
+    const playerName = name.trim() || '사쿠야';
+    onSaveRecord(playerName);
+    setSaved(true);
+  };
+
+  const handleReset = () => {
+    setSaved(false);
+    setName('');
+    onReset();
+  };
 
   return (
     <AnimatePresence>
@@ -50,6 +65,47 @@ export default function Overlay({ gameState, score, onReset }) {
                 <div className="overlay-emoji">🐷🫑</div>
                 <h2>뿌이뿌이~ 배불러!</h2>
                 <p>사쿠야가 파프리카를 잔뜩 먹었어요!</p>
+                <div className="gp-overlay-stats">
+                  <div className="gp-stat">
+                    <span className="gp-stat-label">최종 점수</span>
+                    <span className="gp-stat-value">{score}점</span>
+                  </div>
+                </div>
+
+                {!saved ? (
+                  <div className="name-input-area">
+                    <p className="name-label">🏆 기록에 남길 이름을 입력해줘!</p>
+                    <div className="name-input-row">
+                      <input
+                        className="name-input"
+                        type="text"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                        placeholder="사쿠야"
+                        maxLength={10}
+                        onKeyDown={e => e.key === 'Enter' && handleSave()}
+                        autoFocus
+                      />
+                      <motion.button
+                        className="btn btn-save"
+                        onClick={handleSave}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        저장!
+                      </motion.button>
+                    </div>
+                  </div>
+                ) : (
+                  <motion.p
+                    className="name-saved"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring' }}
+                  >
+                    ✅ 기록 저장 완료!
+                  </motion.p>
+                )}
               </>
             ) : (
               <>
@@ -58,17 +114,17 @@ export default function Overlay({ gameState, score, onReset }) {
                 </motion.div>
                 <h2>뿌이... 아쉬워!</h2>
                 <p>사쿠야가 더 먹고 싶대요...</p>
+                <div className="gp-overlay-stats">
+                  <div className="gp-stat">
+                    <span className="gp-stat-label">최종 점수</span>
+                    <span className="gp-stat-value">{score}점</span>
+                  </div>
+                </div>
               </>
             )}
-            <div className="gp-overlay-stats">
-              <div className="gp-stat">
-                <span className="gp-stat-label">최종 점수</span>
-                <span className="gp-stat-value">{score}점</span>
-              </div>
-            </div>
             <motion.button
               className="btn btn-restart gp-btn-restart"
-              onClick={onReset}
+              onClick={handleReset}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

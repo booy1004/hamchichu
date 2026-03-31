@@ -31,11 +31,9 @@ export default function GuineaPigGame() {
     }
   }, [score]);
 
-  useEffect(() => {
-    if (gameState === 'ended' && score > 0) {
-      addRecord('easy', score, 0);
-    }
-  }, [gameState]);
+  const handleSaveRecord = (playerName) => {
+    addRecord('easy', score, 0, playerName);
+  };
 
   const handleJoinChallenge = (code) => {
     const parsed = parseChallengeCode(code);
@@ -112,7 +110,7 @@ export default function GuineaPigGame() {
         <span>👆 첫 번째 셀 탭 → 두 번째 셀 탭 → 사각형 안의 합이 10이면 사라져요!</span>
       </div>
 
-      <Overlay gameState={gameState} score={score} onReset={resetGame} />
+      <Overlay gameState={gameState} score={score} onReset={resetGame} onSaveRecord={handleSaveRecord} />
 
       <p className="gp-credits">🔊 Guinea pig sound: RICHERlandTV</p>
     </div>

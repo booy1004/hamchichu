@@ -326,6 +326,22 @@
 .gp-stat-label { font-size: 0.85rem; color: #888; }
 .gp-stat-value { font-size: 1.4rem; font-weight: bold; color: #33691E; }
 
+/* 이름 입력 */
+.name-input-area { margin-top: 16px; }
+.name-label { font-size: 0.9rem; color: #666; margin-bottom: 8px; }
+.name-input-row { display: flex; gap: 8px; justify-content: center; }
+.name-input {
+  padding: 10px 16px; border: 2px solid #C5E1A5; border-radius: 12px;
+  font-family: 'Jua', sans-serif; font-size: 1.1rem; outline: none;
+  width: 160px; text-align: center; transition: border-color 0.2s;
+}
+.name-input:focus { border-color: #7CB342; }
+.btn-save {
+  background: linear-gradient(135deg, #66BB6A, #43A047);
+  color: white; font-size: 1rem; padding: 10px 20px;
+}
+.name-saved { margin-top: 16px; font-size: 1.1rem; color: #2E7D32; }
+
 /* 공통 */
 .overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.5);

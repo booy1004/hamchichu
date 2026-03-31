@@ -18,8 +18,7 @@ function saveRecords(records) {
 export default function useGuineaRecords() {
   const [records, setRecords] = useState(loadRecords);
 
-  const addRecord = useCallback((difficulty, score, maxCombo) => {
-    const name = prompt('🐹 뿌이뿌이~ 이름을 입력해줘:') || '사쿠야';
+  const addRecord = useCallback((difficulty, score, maxCombo, name = '사쿠야') => {
     const newRecord = {
       name,
       score,
