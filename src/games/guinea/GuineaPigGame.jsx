@@ -24,12 +24,12 @@ export default function GuineaPigGame() {
   const { records, addRecord, clearRecords } = useGuineaRecords();
   const { play: playSound } = useSound();
 
-  // 점수 올라가면 소리 재생 (임시 비활성화 - 들썩거림 테스트)
-  // useEffect(() => {
-  //   if (score > 0 && gameState === 'playing') {
-  //     playSound();
-  //   }
-  // }, [score]);
+  // 점수 올라가면 소리 재생
+  useEffect(() => {
+    if (score > 0 && gameState === 'playing') {
+      playSound();
+    }
+  }, [score]);
 
   useEffect(() => {
     if (gameState === 'ended' && score > 0) {
