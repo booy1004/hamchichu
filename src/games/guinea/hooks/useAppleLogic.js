@@ -218,10 +218,10 @@ export default function useAppleLogic() {
         setDragStart(null);
         setDragEnd(null);
       } else {
-        // 합이 10이 아니면 → 두 번째 셀을 새 첫 번째로
-        setTapFirst({ r, c });
-        setDragStart({ r, c });
-        setDragEnd({ r, c });
+        // 합이 10이 아니면 → 전부 초기화
+        setTapFirst(null);
+        setDragStart(null);
+        setDragEnd(null);
       }
     }
   }, [gameState, tapFirst, getBoxCells, startTimer]);
