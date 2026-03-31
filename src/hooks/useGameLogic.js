@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { seedToWords, wordsToSeed } from '../wordCode';
 
 const DIFFICULTIES = {
   easy: { rows: 9, cols: 9, mines: 10 },
@@ -301,23 +302,16 @@ export default function useGameLogic(difficulty = 'easy') {
     firstClick.current = true;
   }, [difficulty, stopTimer]);
 
-  // 대결 코드 생성 (난이도 + 시드 인코딩)
+  // 대결 코드 생성 (귀여운 단어 조합)
   const generateChallengeCode = useCallback(() => {
     const seed = currentSeed || generateSeed();
     setCurrentSeed(seed);
-    const code = btoa(JSON.stringify({ d: difficulty, s: seed }));
-    return code;
+    return seedToWords(seed, difficulty);
   }, [currentSeed, difficulty]);
 
   // 대결 코드 파싱
   const parseChallengeCode = useCallback((code) => {
-    try {
-      const { d, s } = JSON.parse(atob(code));
-      if (!DIFFICULTIES[d] || typeof s !== 'number') return null;
-      return { difficulty: d, seed: s };
-    } catch {
-      return null;
-    }
+    return wordsToSeed(code);
   }, []);
 
   return {

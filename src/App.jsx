@@ -106,10 +106,15 @@ export default function App() {
         <Challenge onGenerate={handleGenerateChallenge} onJoin={handleJoinChallenge} />
       </div>
 
-      <div className="help-text">
+      <div className="help-text help-desktop">
         <span>🖱️ 좌클릭: 치즈 먹기</span>
         <span>🖱️ 우클릭: 해바라기씨 놓기</span>
         <span>🖱️ 더블클릭: 주변 자동 오픈</span>
+      </div>
+      <div className="help-text help-mobile">
+        <span>👆 탭: 치즈 먹기</span>
+        <span>👆 꾹 누르기: 해바라기씨 놓기</span>
+        <span>👆 더블탭: 주변 자동 오픈</span>
       </div>
 
       <Overlay gameState={gameState} timer={timer} onReset={() => resetGame(difficulty)} />

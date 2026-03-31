@@ -1,3 +1,4 @@
+import { useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 const NUMBER_COLORS = [
@@ -6,6 +7,7 @@ const NUMBER_COLORS = [
 ];
 
 const CAT_COLORS = ['#F4A460', '#808080', '#2C2C2C', '#FFD700', '#E8D5B7'];
+const LONG_PRESS_MS = 400;
 
 function CheeseTile() {
   return (
@@ -97,9 +99,15 @@ function SunflowerSeed() {
 
 export default function Cell({ cell, row, col, onClick, onRightClick, onDoubleClick, gameState }) {
   const catColor = CAT_COLORS[(row * 7 + col * 13) % CAT_COLORS.length];
+  const longPressTimer = useRef(null);
+  const didLongPress = useRef(false);
 
   const handleClick = (e) => {
     e.preventDefault();
+    if (didLongPress.current) {
+      didLongPress.current = false;
+      return;
+    }
     onClick(row, col);
   };
 
@@ -113,12 +121,32 @@ export default function Cell({ cell, row, col, onClick, onRightClick, onDoubleCl
     onDoubleClick(row, col);
   };
 
+  // 모바일 롱프레스 = 해바라기씨 설치
+  const handleTouchStart = useCallback((e) => {
+    didLongPress.current = false;
+    longPressTimer.current = setTimeout(() => {
+      didLongPress.current = true;
+      onRightClick(row, col);
+    }, LONG_PRESS_MS);
+  }, [row, col, onRightClick]);
+
+  const handleTouchEnd = useCallback(() => {
+    clearTimeout(longPressTimer.current);
+  }, []);
+
+  const handleTouchMove = useCallback(() => {
+    clearTimeout(longPressTimer.current);
+  }, []);
+
   if (!cell.isRevealed) {
     return (
       <motion.button
         className="cell cell-hidden"
         onClick={handleClick}
         onContextMenu={handleContext}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchMove={handleTouchMove}
         whileHover={{ scale: 1.05, y: -2 }}
         whileTap={{ scale: 0.95 }}
         aria-label={cell.isFlagged ? '해바라기씨 표시됨' : '치즈 칸'}

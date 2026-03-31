@@ -924,3 +924,37 @@ body {
 .btn-back {
   margin-top: 12px;
 }
+
+/* 단어 코드 스타일 */
+.challenge-code-words {
+  font-family: 'Jua', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  color: var(--text-dark);
+  background: linear-gradient(135deg, #FFF8E7, #FFE8A0);
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 2px dashed var(--cheese-dark);
+}
+
+/* 모바일 롱프레스 시 기본 메뉴 방지 */
+.board {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.cell {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* PC/모바일 도움말 분기 */
+.help-mobile { display: none; }
+
+@media (hover: none) and (pointer: coarse) {
+  .help-desktop { display: none; }
+  .help-mobile { display: flex; }
+}
