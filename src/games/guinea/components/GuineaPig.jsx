@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '../../../themes/ThemeContext';
+import PixelGuineaPig from '../../../themes/pixel/PixelGuineaPig';
 
 const BELLY_SIZES = [
   { scale: 1, label: '날씬' },
@@ -16,6 +18,12 @@ function getBellyLevel(score) {
 }
 
 export default function GuineaPig({ gameState, score, boxSum, boxCount }) {
+  const { theme } = useTheme();
+
+  if (theme === 'pixel') {
+    return <PixelGuineaPig gameState={gameState} score={score} boxSum={boxSum} boxCount={boxCount} />;
+  }
+
   const bellyLevel = getBellyLevel(score);
   const bellySize = BELLY_SIZES[bellyLevel];
   const [showSpeech, setShowSpeech] = useState(false);

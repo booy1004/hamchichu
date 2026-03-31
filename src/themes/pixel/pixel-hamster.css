@@ -1,0 +1,287 @@
+/* ===== 레트로 픽셀 테마 - 햄스터 게임 (파스텔 GBA) ===== */
+
+/* 배경 - 체크무늬 */
+[data-theme="pixel"] .game-bg {
+  background:
+    repeating-conic-gradient(
+      rgba(248,232,136,0.15) 0% 25%,
+      transparent 0% 50%
+    ) 0 0 / 16px 16px,
+    linear-gradient(180deg, #fff8e8 0%, #f8f0d8 100%);
+  opacity: 1;
+}
+
+/* 헤더 */
+[data-theme="pixel"] .header {
+  margin-bottom: 8px;
+}
+
+[data-theme="pixel"] .title {
+  font-family: var(--pixel-font);
+  font-size: 1.1rem;
+  color: #c08830;
+  text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+  line-height: 1.6;
+}
+
+[data-theme="pixel"] .title-emoji {
+  font-size: 1.6rem;
+}
+
+[data-theme="pixel"] .subtitle {
+  font-family: var(--pixel-font);
+  font-size: 0.75rem;
+  color: #c0a870;
+  line-height: 1.6;
+}
+
+/* HUD - 파스텔 옐로우 */
+[data-theme="pixel"] .hud {
+  background: #fff0c0;
+  box-shadow: var(--px-outline), var(--px-inset);
+  border-radius: 0;
+  padding: 8px 20px;
+  gap: 16px;
+  border: 2px solid #e8c860;
+}
+
+[data-theme="pixel"] .hud-icon { font-size: 1.2rem; }
+[data-theme="pixel"] .hud-label {
+  font-family: var(--pixel-font);
+  font-size: 0.6rem;
+  color: #c0a060;
+  line-height: 1.6;
+}
+[data-theme="pixel"] .hud-value {
+  font-family: var(--pixel-font);
+  font-size: 1rem;
+  color: #806020;
+}
+
+[data-theme="pixel"] .hud-won {
+  background: var(--px-mint);
+  color: var(--px-white);
+  border-radius: 0;
+  font-family: var(--pixel-font);
+  font-size: 0.8rem;
+  box-shadow: var(--px-outline);
+}
+
+[data-theme="pixel"] .hud-lost {
+  background: var(--px-pink);
+  color: var(--px-white);
+  border-radius: 0;
+  font-family: var(--pixel-font);
+  font-size: 0.8rem;
+  box-shadow: var(--px-outline);
+}
+
+/* 보드 래퍼 - 파스텔 프레임 */
+[data-theme="pixel"] .board-wrapper {
+  background: #f8e888;
+  border-radius: 0;
+  box-shadow: var(--px-outline-thick);
+  padding: 6px;
+  border: 3px solid #d8c050;
+}
+
+/* 보드 */
+[data-theme="pixel"] .board {
+  gap: 1px;
+  background: #d8c050;
+}
+
+/* 셀 */
+[data-theme="pixel"] .cell {
+  border-radius: 0;
+  font-family: var(--pixel-font);
+}
+
+[data-theme="pixel"] .cell-hidden {
+  background: #ffe880;
+  box-shadow: var(--px-inset);
+  border: 1px solid #d8c050;
+}
+
+[data-theme="pixel"] .cell-hidden:hover {
+  background: #fff0a0;
+  box-shadow: var(--px-inset), 0 0 0 1px #c0a030;
+}
+
+[data-theme="pixel"] .cell-revealed {
+  background: #fff8e0;
+  box-shadow: inset 1px 1px 0 0 rgba(0,0,0,0.05);
+}
+
+[data-theme="pixel"] .cell-mine {
+  background: #ffe0e0;
+  box-shadow: inset 1px 1px 0 0 rgba(0,0,0,0.05);
+}
+
+[data-theme="pixel"] .cell-number {
+  font-family: var(--pixel-font);
+  font-size: 0.85rem;
+}
+
+[data-theme="pixel"] .cell-clickable:hover {
+  background: #fff0c0;
+  box-shadow: inset 1px 1px 0 0 rgba(0,0,0,0.05), 0 0 0 1px #d8c050;
+}
+
+/* 치즈 타일 */
+[data-theme="pixel"] .cheese-tile {
+  background: #ffe070;
+  border-radius: 0;
+}
+
+[data-theme="pixel"] .cheese-hole {
+  background: rgba(0,0,0,0.1);
+  border-radius: 0;
+}
+
+/* 해바라기씨 */
+[data-theme="pixel"] .sunflower-seed svg {
+  filter: none;
+}
+
+/* 고양이 - 각진 픽셀 */
+[data-theme="pixel"] .cat-body,
+[data-theme="pixel"] .cat-body-awake {
+  border-radius: 4px;
+}
+
+[data-theme="pixel"] .cat-ear {
+  clip-path: polygon(50% 0%, 10% 100%, 90% 100%);
+}
+
+[data-theme="pixel"] .cat-tail {
+  border-radius: 4px;
+}
+
+/* 햄스터 - 각진 귀여운 픽셀 */
+[data-theme="pixel"] .hamster-body {
+  border-radius: 8px;
+  box-shadow:
+    3px 0 0 0 #c09040,
+    -3px 0 0 0 #c09040,
+    0 3px 0 0 #c09040,
+    0 -3px 0 0 #c09040;
+}
+
+[data-theme="pixel"] .hamster-ear {
+  border-radius: 3px;
+}
+
+[data-theme="pixel"] .hamster-eye {
+  border-radius: 2px;
+}
+
+[data-theme="pixel"] .hamster-pupil {
+  border-radius: 1px;
+}
+
+[data-theme="pixel"] .hamster-nose {
+  border-radius: 2px;
+}
+
+[data-theme="pixel"] .hamster-cheek {
+  border-radius: 3px;
+}
+
+[data-theme="pixel"] .hamster-belly {
+  border-radius: 4px;
+}
+
+[data-theme="pixel"] .hamster-hand-l,
+[data-theme="pixel"] .hamster-hand-r {
+  border-radius: 2px;
+}
+
+/* 말풍선 - 픽셀 보더 */
+[data-theme="pixel"] .hamster-speech {
+  font-family: var(--pixel-font);
+  font-size: 0.85rem;
+  border-radius: 0;
+  background: var(--px-white);
+  color: var(--px-text);
+  box-shadow: var(--px-outline);
+  line-height: 1.6;
+}
+
+[data-theme="pixel"] .hamster-speech::after {
+  border-top-color: var(--px-white);
+}
+
+[data-theme="pixel"] .speech-scared {
+  background: #ffe0e0;
+  color: #c04040;
+}
+[data-theme="pixel"] .speech-scared::after {
+  border-top-color: #ffe0e0;
+}
+
+[data-theme="pixel"] .speech-happy {
+  background: #e0ffe0;
+  color: #408040;
+}
+[data-theme="pixel"] .speech-happy::after {
+  border-top-color: #e0ffe0;
+}
+
+[data-theme="pixel"] .hamster-cheek-status {
+  font-family: var(--pixel-font);
+  font-size: 0.7rem;
+  color: #c0a060;
+  line-height: 1.6;
+}
+
+/* 컨트롤 */
+[data-theme="pixel"] .btn-new {
+  background: var(--px-yellow);
+  color: #806020;
+  border: 2px solid #d8c050;
+}
+
+[data-theme="pixel"] .btn-mute {
+  background: var(--px-surface);
+  color: var(--px-text);
+  border: 2px solid var(--px-border-light);
+}
+
+[data-theme="pixel"] .btn-diff {
+  background: #fff8e8;
+  color: #a08040;
+  font-size: 0.7rem;
+  border: 2px solid #e8d8a0;
+}
+
+[data-theme="pixel"] .btn-restart {
+  background: var(--px-mint) !important;
+  color: var(--px-white) !important;
+  border-radius: 0;
+  font-family: var(--pixel-font);
+  font-size: 0.85rem;
+  box-shadow: var(--px-outline);
+}
+
+/* 도움말 */
+[data-theme="pixel"] .help-text {
+  font-family: var(--pixel-font);
+  font-size: 0.7rem;
+  color: #c0a870;
+  line-height: 1.8;
+}
+
+/* 오버레이 시간 */
+[data-theme="pixel"] .overlay-time {
+  font-family: var(--pixel-font);
+  font-size: 0.85rem;
+  color: #c08830;
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+  [data-theme="pixel"] .title { font-size: 0.85rem; }
+  [data-theme="pixel"] .cell { width: 28px; height: 28px; }
+  [data-theme="pixel"] .cell-number { font-size: 0.7rem; }
+}

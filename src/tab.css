@@ -69,3 +69,30 @@ body {
     padding: 8px 14px;
   }
 }
+
+/* 테마 토글 버튼 */
+.theme-toggle-btn {
+  margin-left: 12px;
+  background: linear-gradient(135deg, #9B59B6, #8E44AD);
+  color: white;
+  font-size: 0.85rem;
+  border: 2px solid transparent;
+}
+
+.theme-toggle-btn:hover {
+  background: linear-gradient(135deg, #A569BD, #9B59B6);
+}
+
+/* 픽셀 테마 토글 버튼 */
+[data-theme="pixel"] .theme-toggle-btn {
+  background: var(--px-primary);
+  color: var(--px-white);
+  border-radius: 0;
+  box-shadow: var(--px-shadow);
+  font-family: var(--pixel-font);
+  font-size: 0.5rem;
+}
+
+[data-theme="pixel"] .theme-toggle-btn:hover {
+  background: #ff5a75;
+}

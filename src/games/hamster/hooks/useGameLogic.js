@@ -78,6 +78,16 @@ export default function useGameLogic(difficulty = 'easy') {
     return () => clearInterval(timerRef.current);
   }, []);
 
+  // 승리 시 고양이(지뢰) 위치 공개
+  useEffect(() => {
+    if (gameState === 'won') {
+      setBoard(prev => prev.map(row => row.map(cell => ({
+        ...cell,
+        isRevealed: cell.isMine ? true : cell.isRevealed,
+      }))));
+    }
+  }, [gameState]);
+
   const startTimer = useCallback(() => {
     if (timerRef.current) return;
     timerRef.current = setInterval(() => setTimer(t => t + 1), 1000);

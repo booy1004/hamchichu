@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import HamsterGame from './games/hamster/HamsterGame';
 import GuineaPigGame from './games/guinea/GuineaPigGame';
+import { useTheme } from './themes/ThemeContext';
 import './tab.css';
 
 const TABS = [
@@ -10,6 +11,7 @@ const TABS = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('guinea');
+  const { theme, toggleTheme, THEMES } = useTheme();
 
   return (
     <div className="app-root">
@@ -23,6 +25,13 @@ export default function App() {
             {tab.label}
           </button>
         ))}
+        <button
+          className={`tab-btn theme-toggle-btn`}
+          onClick={toggleTheme}
+          title="테마 전환"
+        >
+          {theme === 'default' ? '👾 레트로' : '🎨 기본'}
+        </button>
       </nav>
       <div className="tab-content">
         {activeTab === 'hamster' && <HamsterGame />}

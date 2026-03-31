@@ -953,3 +953,9 @@
   padding: 6px 12px;
   min-width: 44px;
 }
+
+/* 승리 시 고양이 칸 - 평화로운 느낌 */
+.cell-mine-found {
+  background: linear-gradient(145deg, #E8F5E9, #C8E6C9);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}

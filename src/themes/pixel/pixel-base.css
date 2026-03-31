@@ -1,0 +1,315 @@
+/* ===== 레트로 픽셀 테마 - 귀여운 파스텔 GBA 스타일 ===== */
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+[data-theme="pixel"] {
+  /* 픽셀 폰트 */
+  --pixel-font: 'DotGothic16', 'Jua', sans-serif;
+
+  /* 파스텔 GBA 팔레트 */
+  --px-bg: #f0e6ff;
+  --px-bg-alt: #e6f0ff;
+  --px-surface: #ffffff;
+  --px-border: #b8a0d8;
+  --px-border-light: #d4c4ee;
+  --px-primary: #a888d8;
+  --px-pink: #f0a0c0;
+  --px-mint: #88d8c0;
+  --px-sky: #88c8f0;
+  --px-yellow: #f8e888;
+  --px-peach: #f8c8a8;
+  --px-text: #5040608;
+  --px-text: #504060;
+  --px-text-dim: #9080a8;
+  --px-white: #ffffff;
+  --px-red: #e87080;
+  --px-green: #70c888;
+
+  /* 픽셀 보더 (2px 두꺼운 아웃라인) */
+  --px-outline: 
+    2px 0 0 0 var(--px-border),
+    -2px 0 0 0 var(--px-border),
+    0 2px 0 0 var(--px-border),
+    0 -2px 0 0 var(--px-border);
+  --px-outline-thick:
+    3px 0 0 0 var(--px-border),
+    -3px 0 0 0 var(--px-border),
+    0 3px 0 0 var(--px-border),
+    0 -3px 0 0 var(--px-border);
+  --px-inset:
+    inset 2px 2px 0 0 rgba(255,255,255,0.6),
+    inset -2px -2px 0 0 rgba(0,0,0,0.08);
+}
+
+/* 전역 */
+[data-theme="pixel"] body {
+  font-family: var(--pixel-font);
+  background: var(--px-bg);
+  color: var(--px-text);
+  image-rendering: pixelated;
+}
+
+[data-theme="pixel"] .app-root {
+  background: var(--px-bg);
+}
+
+/* 체크무늬 배경 패턴 (GBA 스타일) */
+[data-theme="pixel"] .app-root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    repeating-conic-gradient(
+      rgba(180,160,216,0.12) 0% 25%,
+      transparent 0% 50%
+    ) 0 0 / 16px 16px;
+  pointer-events: none;
+}
+
+/* 탭 네비게이션 */
+[data-theme="pixel"] .tab-nav {
+  background: transparent;
+  gap: 4px;
+  padding: 10px 16px 0;
+}
+
+[data-theme="pixel"] .tab-btn {
+  font-family: var(--pixel-font);
+  font-size: 0.85rem;
+  padding: 8px 18px;
+  border-radius: 0;
+  background: var(--px-surface);
+  color: var(--px-text-dim);
+  box-shadow: var(--px-outline);
+  transition: all 0.1s;
+  border: none;
+  line-height: 1.5;
+}
+
+[data-theme="pixel"] .tab-btn:hover {
+  background: #f0e0ff;
+  color: var(--px-text);
+}
+
+[data-theme="pixel"] .tab-active {
+  background: var(--px-primary);
+  color: var(--px-white);
+  box-shadow: var(--px-outline);
+  bottom: 0;
+  padding-bottom: 10px;
+}
+
+/* 테마 토글 */
+[data-theme="pixel"] .theme-toggle-btn {
+  background: var(--px-pink);
+  color: var(--px-white);
+  border-radius: 0;
+  box-shadow: var(--px-outline);
+  font-family: var(--pixel-font);
+  font-size: 0.8rem;
+}
+
+[data-theme="pixel"] .theme-toggle-btn:hover {
+  background: #e890b0;
+}
+
+/* 공통 버튼 */
+[data-theme="pixel"] .btn {
+  font-family: var(--pixel-font);
+  font-size: 0.8rem;
+  padding: 8px 16px;
+  border-radius: 0;
+  box-shadow: var(--px-outline), var(--px-inset);
+  transition: all 0.1s;
+  line-height: 1.5;
+}
+
+[data-theme="pixel"] .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--px-outline), var(--px-inset), 0 3px 0 0 rgba(0,0,0,0.1);
+}
+
+[data-theme="pixel"] .btn:active {
+  transform: translateY(1px);
+  box-shadow: var(--px-outline);
+}
+
+/* 오버레이 */
+[data-theme="pixel"] .overlay {
+  background: rgba(240,230,255,0.7);
+  backdrop-filter: blur(2px);
+}
+
+[data-theme="pixel"] .overlay-content {
+  background: var(--px-surface);
+  border-radius: 0;
+  box-shadow: var(--px-outline-thick);
+  border: 3px solid var(--px-border);
+  padding: 28px 36px;
+}
+
+[data-theme="pixel"] .overlay-content h2 {
+  font-family: var(--pixel-font);
+  font-size: 1.1rem;
+  color: var(--px-primary);
+  line-height: 1.6;
+}
+
+[data-theme="pixel"] .overlay-content p {
+  font-family: var(--pixel-font);
+  font-size: 0.8rem;
+  color: var(--px-text-dim);
+  line-height: 1.8;
+}
+
+[data-theme="pixel"] .overlay-emoji {
+  font-size: 2.5rem;
+}
+
+/* 기록/대결 패널 */
+[data-theme="pixel"] .records-panel,
+[data-theme="pixel"] .challenge-panel {
+  background: var(--px-surface);
+  border-radius: 0;
+  box-shadow: var(--px-outline-thick);
+  border: 3px solid var(--px-sky);
+}
+
+[data-theme="pixel"] .records-panel h2,
+[data-theme="pixel"] .challenge-panel h2 {
+  font-family: var(--pixel-font);
+  font-size: 1rem;
+  color: var(--px-primary);
+  line-height: 1.6;
+}
+
+[data-theme="pixel"] .records-table th {
+  background: var(--px-bg);
+  font-family: var(--pixel-font);
+  font-size: 0.7rem;
+  color: var(--px-primary);
+  line-height: 1.8;
+}
+
+[data-theme="pixel"] .records-table td {
+  font-family: var(--pixel-font);
+  font-size: 0.7rem;
+  color: var(--px-text);
+  border-bottom: 1px solid var(--px-border-light);
+  line-height: 1.8;
+}
+
+[data-theme="pixel"] .record-gold td {
+  background: #fff8e0;
+  color: #c09020;
+}
+
+[data-theme="pixel"] .records-empty {
+  font-family: var(--pixel-font);
+  font-size: 0.8rem;
+  color: var(--px-text-dim);
+}
+
+[data-theme="pixel"] .btn-tab {
+  font-size: 0.7rem;
+  background: var(--px-bg);
+  color: var(--px-text-dim);
+}
+
+[data-theme="pixel"] .btn-active {
+  background: var(--px-primary) !important;
+  color: var(--px-white) !important;
+  box-shadow: var(--px-outline);
+}
+
+[data-theme="pixel"] .btn-small {
+  font-size: 0.7rem;
+  background: var(--px-bg);
+  color: var(--px-text);
+}
+
+/* 대결 */
+[data-theme="pixel"] .challenge-desc {
+  font-family: var(--pixel-font);
+  font-size: 0.75rem;
+  color: var(--px-text-dim);
+  line-height: 1.8;
+}
+
+[data-theme="pixel"] .btn-create {
+  background: var(--px-mint);
+  color: var(--px-white);
+}
+
+[data-theme="pixel"] .btn-join {
+  background: var(--px-primary);
+  color: var(--px-white);
+}
+
+[data-theme="pixel"] .challenge-code-num {
+  font-family: var(--pixel-font);
+  font-size: 1.4rem;
+  background: var(--px-bg);
+  color: var(--px-primary);
+  border: 2px dashed var(--px-border);
+  border-radius: 0;
+}
+
+[data-theme="pixel"] .challenge-input {
+  font-family: var(--pixel-font);
+  font-size: 0.8rem;
+  background: var(--px-bg);
+  color: var(--px-text);
+  border: 2px solid var(--px-border-light);
+  border-radius: 0;
+}
+
+[data-theme="pixel"] .challenge-input:focus {
+  border-color: var(--px-primary);
+}
+
+[data-theme="pixel"] .btn-go {
+  background: var(--px-pink);
+  color: var(--px-white);
+}
+
+[data-theme="pixel"] .btn-copy {
+  background: var(--px-sky);
+  color: var(--px-white);
+}
+
+[data-theme="pixel"] .btn-records {
+  background: var(--px-yellow);
+  color: var(--px-text);
+}
+
+[data-theme="pixel"] .btn-challenge {
+  background: var(--px-pink);
+  color: var(--px-white);
+}
+
+/* 컨페티 - 사각 픽셀 */
+[data-theme="pixel"] .confetti-piece {
+  border-radius: 0;
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+  [data-theme="pixel"] .tab-btn {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+}
+
+
+/* 픽셀 스프라이트 컨테이너 */
+[data-theme="pixel"] .pixel-sprite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme="pixel"] .pixel-sprite svg {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}

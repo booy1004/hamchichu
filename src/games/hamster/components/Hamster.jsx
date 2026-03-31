@@ -1,4 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '../../../themes/ThemeContext';
+import PixelHamster from '../../../themes/pixel/PixelHamster';
 
 const CHEEK_SIZES = [
   { scale: 1, label: '○○' },
@@ -17,6 +19,12 @@ function getCheekLevel(revealed, total) {
 }
 
 export default function Hamster({ gameState, lastAction, revealedCount, totalSafe }) {
+  const { theme } = useTheme();
+
+  if (theme === 'pixel') {
+    return <PixelHamster gameState={gameState} lastAction={lastAction} revealedCount={revealedCount} totalSafe={totalSafe} />;
+  }
+
   const cheekLevel = getCheekLevel(revealedCount, totalSafe);
   const cheekSize = CHEEK_SIZES[cheekLevel];
 

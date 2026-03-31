@@ -158,14 +158,15 @@ export default function Cell({ cell, row, col, onClick, onRightClick, onDoubleCl
 
   // revealed
   if (cell.isMine) {
+    const isLost = gameState === 'lost';
     return (
       <motion.div
-        className="cell cell-mine"
-        initial={{ backgroundColor: '#FFE4E1' }}
-        animate={{ backgroundColor: ['#FFE4E1', '#FFB6C1', '#FFE4E1'] }}
-        transition={{ duration: 1, repeat: Infinity }}
+        className={`cell ${isLost ? 'cell-mine' : 'cell-mine-found'}`}
+        initial={{ scale: 0.8 }}
+        animate={{ scale: 1 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 15 }}
       >
-        {gameState === 'lost' ? <AwakeCat catColor={catColor} /> : <SleepingCat catColor={catColor} />}
+        {isLost ? <AwakeCat catColor={catColor} /> : <SleepingCat catColor={catColor} />}
       </motion.div>
     );
   }

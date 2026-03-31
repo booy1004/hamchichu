@@ -1,0 +1,310 @@
+/* ===== 레트로 픽셀 테마 - 기니피그 게임 (파스텔 GBA) ===== */
+
+/* 배경 - 민트 체크무늬 */
+[data-theme="pixel"] .gp-bg {
+  background:
+    repeating-conic-gradient(
+      rgba(136,216,192,0.12) 0% 25%,
+      transparent 0% 50%
+    ) 0 0 / 16px 16px,
+    linear-gradient(180deg, #e8fff0 0%, #d8f8e8 100%);
+}
+
+[data-theme="pixel"] .gp-app {
+  color: var(--px-text);
+}
+
+/* 헤더 */
+[data-theme="pixel"] .gp-title {
+  font-family: var(--pixel-font);
+  font-size: 1rem;
+  color: #408850;
+  text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+  line-height: 1.6;
+}
+
+[data-theme="pixel"] .gp-title-emoji {
+  font-size: 1.4rem;
+}
+
+[data-theme="pixel"] .gp-subtitle {
+  font-family: var(--pixel-font);
+  font-size: 0.7rem;
+  color: #80b890;
+  line-height: 1.6;
+}
+
+/* HUD - 파스텔 그린 */
+[data-theme="pixel"] .gp-hud {
+  background: #c8f0d0;
+  box-shadow: var(--px-outline), var(--px-inset);
+  border-radius: 0;
+  padding: 8px 20px;
+  border: 2px solid #80c890;
+}
+
+[data-theme="pixel"] .gp-hud-icon { font-size: 1.2rem; }
+[data-theme="pixel"] .gp-hud-label {
+  font-family: var(--pixel-font);
+  font-size: 0.6rem;
+  color: #60a070;
+  line-height: 1.6;
+}
+[data-theme="pixel"] .gp-hud-value {
+  font-family: var(--pixel-font);
+  font-size: 1rem;
+  color: #306840;
+}
+
+[data-theme="pixel"] .time-danger {
+  color: var(--px-red) !important;
+}
+
+[data-theme="pixel"] .gp-hud-sum {
+  font-family: var(--pixel-font);
+  font-size: 0.85rem;
+  background: rgba(255,255,255,0.5);
+  color: #408850;
+  border-radius: 0;
+  box-shadow: var(--px-outline);
+}
+
+[data-theme="pixel"] .sum-match {
+  background: var(--px-mint) !important;
+  color: var(--px-white) !important;
+}
+
+[data-theme="pixel"] .sum-over {
+  background: var(--px-pink) !important;
+  color: var(--px-white) !important;
+}
+
+[data-theme="pixel"] .gp-hud-status {
+  font-family: var(--pixel-font);
+  font-size: 0.8rem;
+  background: var(--px-peach);
+  color: var(--px-white);
+  border-radius: 0;
+  box-shadow: var(--px-outline);
+}
+
+/* 보드 래퍼 - 민트 프레임 */
+[data-theme="pixel"] .gp-board-wrapper {
+  background: #a0e0b8;
+  border-radius: 0;
+  box-shadow: var(--px-outline-thick);
+  padding: 6px;
+  border: 3px solid #60b878;
+}
+
+/* 보드 */
+[data-theme="pixel"] .gp-board {
+  gap: 1px;
+  background: #60b878;
+}
+
+/* 셀 */
+[data-theme="pixel"] .gp-cell {
+  border-radius: 0;
+}
+
+[data-theme="pixel"] .gp-cell-alive {
+  background: #f8fff0 !important;
+  border: 1px solid #c0d8b0 !important;
+  box-shadow: var(--px-inset);
+}
+
+[data-theme="pixel"] .gp-cell-dead {
+  background: transparent !important;
+}
+
+[data-theme="pixel"] .gp-cell-inbox {
+  background: #d8f0ff !important;
+  border-color: var(--px-sky) !important;
+  box-shadow: var(--px-inset), 0 0 0 1px var(--px-sky) !important;
+}
+
+[data-theme="pixel"] .gp-cell-match {
+  background: #ffe0e8 !important;
+  border-color: var(--px-pink) !important;
+  box-shadow: var(--px-inset), 0 0 0 1px var(--px-pink) !important;
+}
+
+[data-theme="pixel"] .gp-cell-tap-start {
+  background: #fff8d0 !important;
+  border-color: #e8c860 !important;
+  box-shadow: var(--px-inset), 0 0 0 1px #e8c860 !important;
+}
+
+[data-theme="pixel"] .gp-cell-number {
+  font-family: var(--pixel-font);
+  font-size: 0.9rem;
+  color: var(--px-text) !important;
+}
+
+/* 파프리카 */
+[data-theme="pixel"] .gp-paprika-bg {
+  opacity: 0.6;
+}
+
+/* 기니피그 캐릭터 - 각진 귀여운 픽셀 */
+[data-theme="pixel"] .gp-body {
+  border-radius: 8px;
+  box-shadow:
+    3px 0 0 0 #a08870,
+    -3px 0 0 0 #a08870,
+    0 3px 0 0 #a08870,
+    0 -3px 0 0 #a08870;
+}
+
+[data-theme="pixel"] .gp-ear {
+  border-radius: 3px;
+}
+
+[data-theme="pixel"] .gp-eye {
+  border-radius: 2px;
+}
+
+[data-theme="pixel"] .gp-pupil {
+  border-radius: 1px;
+}
+
+[data-theme="pixel"] .gp-nose {
+  border-radius: 2px;
+}
+
+[data-theme="pixel"] .gp-cheek {
+  border-radius: 3px;
+}
+
+[data-theme="pixel"] .gp-belly {
+  border-radius: 4px;
+}
+
+[data-theme="pixel"] .gp-foot {
+  border-radius: 3px;
+}
+
+/* 말풍선 */
+[data-theme="pixel"] .gp-speech {
+  font-family: var(--pixel-font);
+  font-size: 0.8rem;
+  border-radius: 0;
+  background: var(--px-white);
+  color: var(--px-text);
+  box-shadow: var(--px-outline);
+  line-height: 1.6;
+}
+
+[data-theme="pixel"] .gp-speech::after {
+  border-top-color: var(--px-white);
+}
+
+[data-theme="pixel"] .speech-excited {
+  background: #fff8d0;
+  color: #a08020;
+}
+[data-theme="pixel"] .speech-excited::after {
+  border-top-color: #fff8d0;
+}
+
+[data-theme="pixel"] .speech-sad {
+  background: #e8e0f0;
+  color: #8070a0;
+}
+[data-theme="pixel"] .speech-sad::after {
+  border-top-color: #e8e0f0;
+}
+
+[data-theme="pixel"] .speech-happy {
+  background: #e0ffe0;
+  color: #408040;
+}
+[data-theme="pixel"] .speech-happy::after {
+  border-top-color: #e0ffe0;
+}
+
+[data-theme="pixel"] .gp-belly-status {
+  font-family: var(--pixel-font);
+  font-size: 0.7rem;
+  color: #a08870;
+  line-height: 1.6;
+}
+
+/* 컨트롤 */
+[data-theme="pixel"] .gp-btn-new {
+  background: var(--px-mint);
+  color: var(--px-white);
+  border: 2px solid #60b878;
+}
+
+[data-theme="pixel"] .gp-btn-restart {
+  background: var(--px-mint) !important;
+  color: var(--px-white) !important;
+  border-radius: 0;
+  font-family: var(--pixel-font);
+  font-size: 0.85rem;
+  box-shadow: var(--px-outline);
+}
+
+/* 범례 */
+[data-theme="pixel"] .gp-legend {
+  background: rgba(255,255,255,0.6);
+  border-radius: 0;
+  border: 2px solid #c0d8b0;
+  font-family: var(--pixel-font);
+  font-size: 0.65rem;
+  box-shadow: var(--px-outline);
+}
+
+[data-theme="pixel"] .gp-legend-title {
+  color: #408850;
+}
+
+[data-theme="pixel"] .gp-legend-item {
+  color: var(--px-text-dim);
+}
+
+[data-theme="pixel"] .legend-dot {
+  border-radius: 0;
+}
+
+[data-theme="pixel"] .legend-none { background: #f8fff0; border-color: #c0d8b0; }
+[data-theme="pixel"] .legend-green { background: #c0f0c8; border-color: #60c070; }
+[data-theme="pixel"] .legend-yellow { background: #f8f0c0; border-color: #d8c050; }
+[data-theme="pixel"] .legend-orange { background: #f8e0c0; border-color: #e0a050; }
+[data-theme="pixel"] .legend-red { background: #f8d0d0; border-color: #e07070; }
+
+/* 도움말 */
+[data-theme="pixel"] .gp-help {
+  font-family: var(--pixel-font);
+  font-size: 0.7rem;
+  color: #80b890;
+  line-height: 1.8;
+}
+
+[data-theme="pixel"] .gp-credits {
+  font-family: var(--pixel-font);
+  font-size: 0.6rem;
+  color: #c0d8c0;
+}
+
+/* 오버레이 통계 */
+[data-theme="pixel"] .gp-stat-label {
+  font-family: var(--pixel-font);
+  font-size: 0.7rem;
+  color: var(--px-text-dim);
+}
+
+[data-theme="pixel"] .gp-stat-value {
+  font-family: var(--pixel-font);
+  font-size: 1rem;
+  color: #408850;
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+  [data-theme="pixel"] .gp-title { font-size: 0.75rem; }
+  [data-theme="pixel"] .gp-cell { width: 30px; height: 30px; }
+  [data-theme="pixel"] .gp-cell-number { font-size: 0.75rem; }
+}
