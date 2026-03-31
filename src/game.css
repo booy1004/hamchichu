@@ -1,0 +1,751 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --cheese-light: #FFE066;
+  --cheese-mid: #FFCC02;
+  --cheese-dark: #E6A800;
+  --cheese-hole: #D4920A;
+  --bg-warm: #FFF8E7;
+  --bg-wood: #8B6914;
+  --text-dark: #4A3728;
+  --pink: #FFB6C1;
+  --cat-orange: #F4A460;
+}
+
+body {
+  font-family: 'Jua', sans-serif;
+  background: var(--bg-warm);
+  color: var(--text-dark);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* 배경 치즈 패턴 */
+.game-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle 20px at 10% 20%, var(--cheese-hole) 0%, transparent 100%),
+    radial-gradient(circle 15px at 80% 10%, var(--cheese-hole) 0%, transparent 100%),
+    radial-gradient(circle 25px at 50% 80%, var(--cheese-hole) 0%, transparent 100%),
+    radial-gradient(circle 12px at 30% 60%, var(--cheese-hole) 0%, transparent 100%),
+    radial-gradient(circle 18px at 90% 70%, var(--cheese-hole) 0%, transparent 100%),
+    radial-gradient(circle 10px at 15% 90%, var(--cheese-hole) 0%, transparent 100%),
+    linear-gradient(135deg, #FFF8E7 0%, #FFE8A0 50%, #FFF0C0 100%);
+  opacity: 0.5;
+}
+
+/* 헤더 */
+.header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 2rem;
+  color: var(--text-dark);
+  text-shadow: 2px 2px 0 var(--cheese-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.title-emoji {
+  font-size: 2.2rem;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #8B7355;
+  margin-top: 4px;
+}
+
+/* HUD */
+.hud {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, var(--cheese-mid), var(--cheese-dark));
+  padding: 10px 24px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.3);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.hud-icon { font-size: 1.4rem; }
+.hud-label { font-size: 0.7rem; color: var(--text-dark); opacity: 0.8; }
+.hud-value { font-size: 1.3rem; font-weight: bold; color: var(--text-dark); }
+
+.hud-status {
+  font-size: 1.2rem;
+  padding: 4px 16px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+.hud-won { background: #4ECDC4; color: white; }
+.hud-lost { background: #FF6B6B; color: white; }
+
+/* 게임 영역 */
+.game-area {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hamster-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}
+
+.board-wrapper {
+  background: linear-gradient(145deg, var(--cheese-light), var(--cheese-dark));
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.2),
+    inset 0 2px 0 rgba(255,255,255,0.4),
+    0 0 0 4px var(--cheese-dark);
+}
+
+/* 보드 */
+.board {
+  display: grid;
+  gap: 2px;
+}
+
+/* 셀 */
+.cell {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.cell-hidden {
+  background: linear-gradient(145deg, #FFD54F, #FFB300);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5);
+  transition: box-shadow 0.2s;
+}
+
+.cell-hidden:hover {
+  box-shadow: 0 3px 8px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.cell-revealed {
+  background: linear-gradient(145deg, #FFF8E1, #FFECB3);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.cell-mine {
+  background: linear-gradient(145deg, #FFE4E1, #FFB6C1);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.cell-number {
+  font-weight: bold;
+  font-size: 1rem;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+}
+
+/* 치즈 타일 */
+.cheese-tile {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cheese-hole {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.05) 100%);
+}
+.hole-1 { width: 10px; height: 8px; top: 4px; left: 3px; }
+.hole-2 { width: 7px; height: 6px; top: 16px; right: 5px; }
+.hole-3 { width: 5px; height: 5px; bottom: 4px; left: 12px; }
+
+/* 해바라기씨 */
+.sunflower-seed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 고양이 - 자는 모습 */
+.cat-sleeping {
+  position: relative;
+  width: 28px;
+  height: 22px;
+}
+
+.cat-body, .cat-body-awake {
+  position: relative;
+  width: 28px;
+  height: 18px;
+  background: var(--cat-color, #F4A460);
+  border-radius: 50% 50% 45% 45%;
+}
+
+.cat-ear {
+  position: absolute;
+  width: 8px;
+  height: 10px;
+  background: var(--cat-color, #F4A460);
+  top: -6px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+.cat-ear-l { left: 2px; }
+.cat-ear-r { right: 2px; }
+
+.cat-head {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cat-eye-closed {
+  position: absolute;
+  width: 5px;
+  height: 2px;
+  background: #333;
+  border-radius: 0 0 50% 50%;
+  top: 6px;
+}
+.cat-eye-l { left: 5px; }
+.cat-eye-r { right: 5px; }
+
+.cat-nose {
+  position: absolute;
+  width: 3px;
+  height: 2px;
+  background: #FF9999;
+  border-radius: 50%;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cat-whisker {
+  position: absolute;
+  width: 10px;
+  height: 1px;
+  background: #666;
+  top: 11px;
+}
+.cat-wh-l { left: -4px; transform: rotate(-5deg); }
+.cat-wh-r { right: -4px; transform: rotate(5deg); }
+
+.cat-tail {
+  position: absolute;
+  width: 14px;
+  height: 6px;
+  background: var(--cat-color, #F4A460);
+  border-radius: 50%;
+  bottom: -2px;
+  right: -6px;
+  transform: rotate(-20deg);
+}
+
+.cat-zzz {
+  position: absolute;
+  top: -10px;
+  right: -4px;
+  font-size: 8px;
+  color: #999;
+  animation: zzz 2s ease-in-out infinite;
+}
+.cat-zzz span:nth-child(1) { font-size: 6px; opacity: 0.7; }
+.cat-zzz span:nth-child(2) { font-size: 5px; opacity: 0.5; }
+
+@keyframes zzz {
+  0%, 100% { opacity: 0.5; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* 고양이 - 깨어난 모습 */
+.cat-awake {
+  position: relative;
+  width: 28px;
+  height: 24px;
+}
+
+.cat-eye-open {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: #FFD700;
+  border-radius: 50%;
+  border: 1px solid #333;
+  top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cat-pupil {
+  width: 3px;
+  height: 5px;
+  background: #111;
+  border-radius: 50%;
+}
+
+.cat-mouth-open {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 7px;
+  color: #FF6B6B;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* 햄스터 */
+.hamster-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.hamster-speech {
+  background: white;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text-dark);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+  white-space: nowrap;
+}
+.hamster-speech::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid white;
+}
+.speech-scared { background: #FFE4E1; color: #E74C3C; }
+.speech-scared::after { border-top-color: #FFE4E1; }
+.speech-happy { background: #E8F5E9; color: #2E7D32; }
+.speech-happy::after { border-top-color: #E8F5E9; }
+
+.hamster {
+  position: relative;
+  width: 100px;
+  height: 110px;
+}
+
+.hamster-body {
+  position: relative;
+  width: 80px;
+  height: 90px;
+  background: linear-gradient(180deg, #F5D6A0 0%, #E8C080 50%, #F5D6A0 100%);
+  border-radius: 45% 45% 50% 50%;
+  margin: 10px auto 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.hamster-ear {
+  position: absolute;
+  width: 22px;
+  height: 20px;
+  border-radius: 50%;
+  top: -6px;
+}
+.hamster-ear-l {
+  left: 4px;
+  background: linear-gradient(135deg, #F5D6A0, #FFB6C1);
+}
+.hamster-ear-r {
+  right: 4px;
+  background: linear-gradient(225deg, #F5D6A0, #FFB6C1);
+}
+
+.hamster-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hamster-eye {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #111;
+  border-radius: 50%;
+  top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hamster-eye-l { left: 14px; }
+.hamster-eye-r { right: 14px; }
+
+.hamster-pupil {
+  width: 5px;
+  height: 5px;
+  background: white;
+  border-radius: 50%;
+  position: relative;
+  top: -2px;
+  left: -1px;
+}
+
+.eye-wide {
+  width: 16px;
+  height: 16px;
+  top: 20px;
+  background: white;
+  border: 2px solid #111;
+}
+.eye-wide .hamster-pupil {
+  width: 8px;
+  height: 8px;
+  background: #111;
+  top: 0;
+  left: 0;
+}
+
+.eye-happy {
+  height: 4px;
+  border-radius: 4px 4px 0 0;
+  background: #111;
+  top: 26px;
+}
+
+.hamster-nose {
+  position: absolute;
+  width: 8px;
+  height: 6px;
+  background: #FF9999;
+  border-radius: 50%;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hamster-mouth {
+  position: absolute;
+  width: 12px;
+  height: 6px;
+  border-bottom: 2px solid #C08060;
+  border-radius: 0 0 50% 50%;
+  top: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mouth-eating {
+  width: 14px;
+  height: 10px;
+  background: #C08060;
+  border-radius: 50%;
+  border: none;
+  animation: munch 0.3s ease-in-out infinite;
+}
+
+@keyframes munch {
+  0%, 100% { transform: translateX(-50%) scaleY(1); }
+  50% { transform: translateX(-50%) scaleY(0.5); }
+}
+
+.mouth-shocked {
+  width: 16px;
+  height: 14px;
+  background: #333;
+  border-radius: 50%;
+  border: none;
+}
+
+.mouth-happy {
+  width: 20px;
+  height: 8px;
+  border-bottom: 3px solid #C08060;
+  border-radius: 0 0 50% 50%;
+  border-top: none;
+  background: none;
+}
+
+.hamster-cheek {
+  position: absolute;
+  width: 18px;
+  height: 16px;
+  background: radial-gradient(circle, #FFB6C1 0%, rgba(255,182,193,0.3) 100%);
+  border-radius: 50%;
+  top: 32px;
+}
+.hamster-cheek-l { left: 0; }
+.hamster-cheek-r { right: 0; }
+
+.hamster-whisker {
+  position: absolute;
+  width: 16px;
+  height: 1px;
+  background: #C0A080;
+  top: 40px;
+}
+.hamster-wh-l { left: -6px; transform: rotate(-8deg); }
+.hamster-wh-r { right: -6px; transform: rotate(8deg); }
+
+.hamster-hands {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  font-size: 0.8rem;
+}
+
+.hamster-hand-l, .hamster-hand-r {
+  width: 10px;
+  height: 10px;
+  background: #F5D6A0;
+  border-radius: 50%;
+}
+
+.hamster-cheese-piece {
+  font-size: 14px;
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.thumb-up {
+  font-size: 1.2rem;
+  background: none;
+  width: auto;
+  height: auto;
+}
+
+.hamster-belly {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 30px;
+  background: #FFF0D0;
+  border-radius: 50%;
+}
+
+.hamster-cheek-status {
+  font-size: 0.8rem;
+  color: #8B7355;
+  text-align: center;
+}
+
+/* 컨트롤 */
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  font-family: 'Jua', sans-serif;
+  font-size: 1rem;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-new {
+  background: linear-gradient(135deg, var(--cheese-mid), var(--cheese-dark));
+  color: var(--text-dark);
+}
+
+.difficulty-selector {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-diff {
+  background: #FFF8E7;
+  color: var(--text-dark);
+  font-size: 0.85rem;
+  padding: 6px 14px;
+}
+
+.btn-active {
+  background: linear-gradient(135deg, var(--cheese-mid), var(--cheese-dark));
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.btn-restart {
+  background: linear-gradient(135deg, #4ECDC4, #45B7D1);
+  color: white;
+  font-size: 1.1rem;
+  padding: 12px 32px;
+  margin-top: 16px;
+}
+
+.help-text {
+  display: flex;
+  gap: 20px;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #8B7355;
+}
+
+/* 오버레이 */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.overlay-content {
+  background: white;
+  padding: 32px 48px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+  max-width: 400px;
+}
+
+.overlay-content h2 {
+  font-size: 1.6rem;
+  margin: 12px 0 8px;
+  color: var(--text-dark);
+}
+
+.overlay-content p {
+  color: #666;
+  margin: 4px 0;
+}
+
+.overlay-time {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.overlay-emoji {
+  font-size: 3rem;
+}
+
+.overlay-hamster-clear, .overlay-hamster-lost {
+  margin: 16px 0;
+}
+
+.big-emoji {
+  font-size: 3rem;
+}
+
+.heart-pop {
+  font-size: 2rem;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+/* 컨페티 */
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 101;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -10px;
+  border-radius: 2px;
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+  .title { font-size: 1.4rem; }
+  .cell { width: 28px; height: 28px; }
+  .game-area { flex-direction: column; align-items: center; }
+  .hamster-panel { flex-direction: row; gap: 12px; }
+  .hamster { width: 70px; height: 80px; }
+  .hamster-body { width: 56px; height: 64px; }
+  .hud { gap: 12px; padding: 8px 16px; }
+  .help-text { flex-direction: column; gap: 4px; align-items: center; }
+}
+
+/* 더블클릭 가능한 숫자 칸 */
+.cell-clickable {
+  cursor: pointer;
+}
+.cell-clickable:hover {
+  background: linear-gradient(145deg, #FFF3C4, #FFE082);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 0 2px rgba(255,183,77,0.4);
+}
