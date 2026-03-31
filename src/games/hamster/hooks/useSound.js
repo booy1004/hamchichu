@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 
 // Web Audio API로 귀여운 효과음 합성
 export default function useSound() {
@@ -13,12 +13,43 @@ export default function useSound() {
     });
   }, []);
 
+  // 모바일: 첫 유저 인터랙션에서 AudioContext 초기화
+  useEffect(() => {
+    const initAudio = () => {
+      if (!ctxRef.current) {
+        ctxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (ctxRef.current.state === 'suspended') {
+        ctxRef.current.resume();
+      }
+      // 무음 재생으로 모바일 오디오 잠금 해제
+      const osc = ctxRef.current.createOscillator();
+      const gain = ctxRef.current.createGain();
+      gain.gain.value = 0; // 무음
+      osc.connect(gain);
+      gain.connect(ctxRef.current.destination);
+      osc.start();
+      osc.stop(ctxRef.current.currentTime + 0.01);
+
+      // 한번만 실행
+      document.removeEventListener('touchstart', initAudio);
+      document.removeEventListener('click', initAudio);
+    };
+
+    document.addEventListener('touchstart', initAudio, { once: true });
+    document.addEventListener('click', initAudio, { once: true });
+
+    return () => {
+      document.removeEventListener('touchstart', initAudio);
+      document.removeEventListener('click', initAudio);
+    };
+  }, []);
+
   const getCtx = useCallback(() => {
     if (mutedRef.current) return null;
     if (!ctxRef.current) {
       ctxRef.current = new (window.AudioContext || window.webkitAudioContext)();
     }
-    // resume if suspended (모바일 브라우저 정책)
     if (ctxRef.current.state === 'suspended') {
       ctxRef.current.resume();
     }

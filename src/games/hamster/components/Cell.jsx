@@ -7,7 +7,7 @@ const NUMBER_COLORS = [
 ];
 
 const CAT_COLORS = ['#F4A460', '#808080', '#2C2C2C', '#FFD700', '#E8D5B7'];
-const LONG_PRESS_MS = 400;
+const LONG_PRESS_MS = 200;
 
 function CheeseTile() {
   return (
