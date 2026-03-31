@@ -166,13 +166,15 @@
 .gp-container {
   display: flex; flex-direction: column; align-items: center;
   gap: 8px; position: relative;
+  min-height: 160px;
 }
 
 .gp-speech {
   background: white; padding: 6px 14px; border-radius: 16px;
   font-size: 1rem; font-weight: bold; color: #33691E;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  position: relative; white-space: nowrap;
+  position: absolute; top: -10px; white-space: nowrap;
+  z-index: 10;
 }
 .gp-speech::after {
   content: ''; position: absolute; bottom: -6px; left: 50%;
