@@ -1,10 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* 햄스터 게임 전용 스타일 */
 
 :root {
   --cheese-light: #FFE066;
@@ -16,14 +10,6 @@
   --text-dark: #4A3728;
   --pink: #FFB6C1;
   --cat-orange: #F4A460;
-}
-
-body {
-  font-family: 'Jua', sans-serif;
-  background: var(--bg-warm);
-  color: var(--text-dark);
-  overflow-x: hidden;
-  min-height: 100vh;
 }
 
 .app {

@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Jua', sans-serif;
+  background: #FFF8E7;
+  color: #4A3728;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-nav {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 16px 0;
+  background: linear-gradient(180deg, #FFF8E7 0%, transparent 100%);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.tab-btn {
+  font-family: 'Jua', sans-serif;
+  font-size: 1rem;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 16px 16px 0 0;
+  cursor: pointer;
+  background: #f0e6d0;
+  color: #8B7355;
+  transition: all 0.2s;
+  position: relative;
+  bottom: -2px;
+}
+
+.tab-btn:hover {
+  background: #ffe8a0;
+  color: #4A3728;
+}
+
+.tab-active {
+  background: #FFE066;
+  color: #4A3728;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+  bottom: 0;
+  padding-bottom: 12px;
+  font-weight: bold;
+}
+
+.tab-content {
+  flex: 1;
+}
+
+@media (max-width: 600px) {
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 8px 14px;
+  }
+}

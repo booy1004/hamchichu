@@ -1,0 +1,103 @@
+import { useEffect } from 'react';
+import useAppleLogic from './hooks/useAppleLogic';
+import useGuineaRecords from './hooks/useGuineaRecords';
+import Board from './components/Board';
+import HUD from './components/HUD';
+import GuineaPig from './components/GuineaPig';
+import Overlay from './components/Overlay';
+import Records from './components/Records';
+import Challenge from './components/Challenge';
+import Legend from './components/Legend';
+import './guinea.css';
+
+export default function GuineaPigGame() {
+  const {
+    board, gameState, score, timeLeft, rows, cols,
+    dragStart, dragEnd, getBoxSum, getBoxCells,
+    onDragStart, onDragMove, onDragEnd, resetGame,
+    startWithSeed, generateChallengeCode, parseChallengeCode,
+  } = useAppleLogic();
+
+  const { records, addRecord, clearRecords } = useGuineaRecords();
+
+  useEffect(() => {
+    if (gameState === 'ended' && score > 0) {
+      addRecord('easy', score, 0);
+    }
+  }, [gameState]);
+
+  const handleJoinChallenge = (code) => {
+    const parsed = parseChallengeCode(code);
+    if (!parsed) return false;
+    startWithSeed(parsed.seed);
+    return true;
+  };
+
+  const boxSum = getBoxSum();
+  const boxCells = getBoxCells(dragStart, dragEnd);
+
+  return (
+    <div className="gp-app">
+      <div className="gp-bg" />
+      <header className="gp-header">
+        <h1 className="gp-title">
+          <span className="gp-title-emoji">🐷</span>
+          뿌이뿌이! 파프리카 먹방 사쿠야
+          <span className="gp-title-emoji">🫑</span>
+        </h1>
+        <p className="gp-subtitle">드래그해서 합이 10이 되게 골라 먹어라!</p>
+      </header>
+
+      <HUD
+        score={score}
+        timeLeft={timeLeft}
+        gameState={gameState}
+        boxSum={boxSum}
+        boxCount={boxCells.length}
+      />
+
+      <div className="gp-game-area">
+        <div className="gp-character-panel">
+          <GuineaPig
+            gameState={gameState}
+            score={score}
+            boxSum={boxSum}
+            boxCount={boxCells.length}
+          />
+        </div>
+        <div className="gp-board-wrapper">
+          <Board
+            board={board}
+            rows={rows}
+            cols={cols}
+            dragStart={dragStart}
+            dragEnd={dragEnd}
+            boxSum={boxSum}
+            onDragStart={onDragStart}
+            onDragMove={onDragMove}
+            onDragEnd={onDragEnd}
+          />
+        </div>
+      </div>
+
+      <div className="gp-controls">
+        <button className="btn gp-btn-new" onClick={resetGame}>
+          🫑 새 게임
+        </button>
+        <Records records={records} onClear={clearRecords} />
+        <Challenge onGenerate={generateChallengeCode} onJoin={handleJoinChallenge} />
+      </div>
+
+      <Legend />
+
+      <div className="gp-help help-desktop">
+        <span>🖱️ 드래그로 사각형 박스를 그려서 합이 10이 되면 사라져요!</span>
+      </div>
+      <div className="gp-help help-mobile">
+        <span>👆 터치 드래그로 박스를 그려서 합이 10이 되면 사라져요!</span>
+      </div>
+
+      <Overlay gameState={gameState} score={score} onReset={resetGame} />
+    </div>
+  );
+}
