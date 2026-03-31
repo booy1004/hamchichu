@@ -35,7 +35,6 @@ export default function HamsterGame() {
   useEffect(() => {
     if (gameState === 'won' && prevGameState.current !== 'won') {
       sound.playClear();
-      addRecord(difficulty, timer);
     }
     if (gameState === 'lost' && prevGameState.current !== 'lost') {
       sound.playCat();
@@ -43,6 +42,11 @@ export default function HamsterGame() {
     }
     prevGameState.current = gameState;
   }, [gameState]);
+
+  // 오버레이에서 이름 입력 후 기록 저장
+  const handleSaveRecord = (name) => {
+    addRecord(difficulty, timer, name);
+  };
 
   // 액션에 따른 사운드
   useEffect(() => {
@@ -143,7 +147,7 @@ export default function HamsterGame() {
         <span>👆 더블탭: 주변 자동 오픈</span>
       </div>
 
-      <Overlay gameState={gameState} timer={timer} onReset={() => resetGame(difficulty)} />
+      <Overlay gameState={gameState} timer={timer} onReset={() => resetGame(difficulty)} onSaveRecord={handleSaveRecord} />
     </div>
   );
 }

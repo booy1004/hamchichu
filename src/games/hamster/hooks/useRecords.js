@@ -18,8 +18,7 @@ function saveRecords(records) {
 export default function useRecords() {
   const [records, setRecords] = useState(loadRecords);
 
-  const addRecord = useCallback((difficulty, time) => {
-    const name = prompt('🐹 클리어! 이름을 입력해줘:') || '리쿠';
+  const addRecord = useCallback((difficulty, time, name = '리쿠') => {
     const newRecord = {
       name,
       time,
@@ -30,7 +29,7 @@ export default function useRecords() {
       const updated = { ...prev };
       updated[difficulty] = [...(updated[difficulty] || []), newRecord]
         .sort((a, b) => a.time - b.time)
-        .slice(0, 10); // 상위 10개만
+        .slice(0, 10);
       saveRecords(updated);
       return updated;
     });

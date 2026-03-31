@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function Confetti() {
@@ -30,7 +31,22 @@ function Confetti() {
   );
 }
 
-export default function Overlay({ gameState, timer, onReset }) {
+export default function Overlay({ gameState, timer, onReset, onSaveRecord }) {
+  const [name, setName] = useState('');
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    const playerName = name.trim() || '리쿠';
+    onSaveRecord(playerName);
+    setSaved(true);
+  };
+
+  const handleReset = () => {
+    setSaved(false);
+    setName('');
+    onReset();
+  };
+
   return (
     <AnimatePresence>
       {(gameState === 'won' || gameState === 'lost') && (
@@ -39,14 +55,14 @@ export default function Overlay({ gameState, timer, onReset }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ delay: gameState === 'lost' ? 1 : 0.5 }}
+          transition={{ delay: gameState === 'lost' ? 1 : 2.5 }}
         >
           {gameState === 'won' && <Confetti />}
           <motion.div
             className="overlay-content"
             initial={{ scale: 0, y: 50 }}
             animate={{ scale: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 300, delay: gameState === 'lost' ? 1.2 : 0.7 }}
+            transition={{ type: 'spring', stiffness: 300, delay: gameState === 'lost' ? 1.2 : 2.7 }}
           >
             {gameState === 'won' ? (
               <>
@@ -63,11 +79,46 @@ export default function Overlay({ gameState, timer, onReset }) {
                   <motion.span
                     className="heart-pop"
                     animate={{ scale: [0, 1.2, 1], opacity: [0, 1, 1] }}
-                    transition={{ duration: 0.5, delay: 1.5 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
                   >
                     💕
                   </motion.span>
                 </motion.div>
+
+                {!saved ? (
+                  <div className="name-input-area">
+                    <p className="name-label">🏆 기록에 남길 이름을 입력해줘!</p>
+                    <div className="name-input-row">
+                      <input
+                        className="name-input"
+                        type="text"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                        placeholder="리쿠"
+                        maxLength={10}
+                        onKeyDown={e => e.key === 'Enter' && handleSave()}
+                        autoFocus
+                      />
+                      <motion.button
+                        className="btn btn-save"
+                        onClick={handleSave}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        저장!
+                      </motion.button>
+                    </div>
+                  </div>
+                ) : (
+                  <motion.p
+                    className="name-saved"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring' }}
+                  >
+                    ✅ 기록 저장 완료!
+                  </motion.p>
+                )}
               </>
             ) : (
               <>
@@ -92,7 +143,7 @@ export default function Overlay({ gameState, timer, onReset }) {
             )}
             <motion.button
               className="btn btn-restart"
-              onClick={onReset}
+              onClick={handleReset}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
