@@ -102,11 +102,13 @@ export default function Board({
 
   // 터치 이벤트 (모바일)
   const onTouchStart = useCallback((e) => {
+    e.preventDefault();
     const t = e.touches[0];
     handleDown(t.clientX, t.clientY);
   }, [handleDown]);
 
   const onTouchMove = useCallback((e) => {
+    e.preventDefault();
     const t = e.touches[0];
     handleMove(t.clientX, t.clientY);
   }, [handleMove]);
