@@ -8,6 +8,7 @@ export default function Board({
 }) {
   const boardRef = useRef(null);
   const pointerStartCell = useRef(null);
+  const lastCell = useRef(null);
   const didDrag = useRef(false);
 
   const isInBox = useCallback((r, c) => {
@@ -22,12 +23,9 @@ export default function Board({
   const isMatch = dragStart && dragEnd && boxSum === 10;
   const isTapStart = (r, c) => tapFirst && tapFirst.r === r && tapFirst.c === c;
 
-  const getCellFromEvent = useCallback((e) => {
+  const getCellFromPointer = useCallback((clientX, clientY) => {
     if (!boardRef.current) return null;
     const rect = boardRef.current.getBoundingClientRect();
-    const clientX = e.clientX ?? e.touches?.[0]?.clientX;
-    const clientY = e.clientY ?? e.touches?.[0]?.clientY;
-    if (clientX == null || clientY == null) return null;
     const x = clientX - rect.left;
     const y = clientY - rect.top;
     const gap = 2;
@@ -39,64 +37,84 @@ export default function Board({
     return { r, c };
   }, [rows, cols]);
 
-  // 통합 포인터 핸들러
-  const handlePointerDown = useCallback((e) => {
-    e.preventDefault();
-    const pos = getCellFromEvent(e);
+  const handleDown = useCallback((clientX, clientY) => {
+    const pos = getCellFromPointer(clientX, clientY);
     if (!pos) return;
     pointerStartCell.current = pos;
+    lastCell.current = pos;
     didDrag.current = false;
 
-    // 탭 모드에서 첫 셀이 이미 선택된 상태면 프리뷰 시작
     if (tapFirst) {
       onTapPreview(pos.r, pos.c);
     } else {
-      // 드래그 시작 (PC) 또는 첫 탭 준비
       onDragStart(pos.r, pos.c);
     }
-  }, [getCellFromEvent, onDragStart, tapFirst, onTapPreview]);
+  }, [getCellFromPointer, onDragStart, tapFirst, onTapPreview]);
 
-  const handlePointerMove = useCallback((e) => {
-    e.preventDefault();
-    const pos = getCellFromEvent(e);
+  const handleMove = useCallback((clientX, clientY) => {
+    const pos = getCellFromPointer(clientX, clientY);
     if (!pos || !pointerStartCell.current) return;
+    lastCell.current = pos;
 
-    // 시작 셀과 다른 셀로 이동했으면 드래그 중
     if (pos.r !== pointerStartCell.current.r || pos.c !== pointerStartCell.current.c) {
       didDrag.current = true;
     }
 
     if (tapFirst) {
-      // 탭 모드: 프리뷰 업데이트
       onTapPreview(pos.r, pos.c);
     } else {
-      // 드래그 모드
       onDragMove(pos.r, pos.c);
     }
-  }, [getCellFromEvent, onDragMove, tapFirst, onTapPreview]);
+  }, [getCellFromPointer, onDragMove, tapFirst, onTapPreview]);
 
-  const handlePointerUp = useCallback((e) => {
-    e.preventDefault();
-    const pos = getCellFromEvent(e);
+  const handleUp = useCallback(() => {
+    const pos = lastCell.current || pointerStartCell.current;
 
     if (tapFirst) {
-      // 탭 모드: 두 번째 셀 확정
-      const target = pos || (dragEnd ? { r: dragEnd.r, c: dragEnd.c } : null);
-      if (target) {
-        onTapCell(target.r, target.c);
-      }
+      if (pos) onTapCell(pos.r, pos.c);
     } else if (!didDrag.current && pos) {
-      // 클릭(드래그 안 함) → 탭 모드 시작
-      // dragStart/dragEnd 정리하고 탭으로 전환
       onTapCell(pos.r, pos.c);
     } else {
-      // 실제 드래그 → 드래그 끝
       onDragEnd();
     }
 
     pointerStartCell.current = null;
+    lastCell.current = null;
     didDrag.current = false;
-  }, [getCellFromEvent, onDragEnd, onTapCell, tapFirst, dragEnd]);
+  }, [onDragEnd, onTapCell, tapFirst]);
+
+  // 마우스 이벤트 (PC)
+  const onMouseDown = useCallback((e) => {
+    e.preventDefault();
+    handleDown(e.clientX, e.clientY);
+  }, [handleDown]);
+
+  const onMouseMove = useCallback((e) => {
+    if (!pointerStartCell.current) return;
+    e.preventDefault();
+    handleMove(e.clientX, e.clientY);
+  }, [handleMove]);
+
+  const onMouseUp = useCallback((e) => {
+    e.preventDefault();
+    handleUp();
+  }, [handleUp]);
+
+  // 터치 이벤트 (모바일)
+  const onTouchStart = useCallback((e) => {
+    const t = e.touches[0];
+    handleDown(t.clientX, t.clientY);
+  }, [handleDown]);
+
+  const onTouchMove = useCallback((e) => {
+    const t = e.touches[0];
+    handleMove(t.clientX, t.clientY);
+  }, [handleMove]);
+
+  const onTouchEnd = useCallback((e) => {
+    e.preventDefault();
+    handleUp();
+  }, [handleUp]);
 
   return (
     <div
@@ -106,15 +124,13 @@ export default function Board({
         gridTemplateColumns: `repeat(${cols}, 1fr)`,
         gridTemplateRows: `repeat(${rows}, 1fr)`,
       }}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={(e) => {
-        // 드래그 모드에서만 leave 시 끝내기
-        if (!tapFirst && pointerStartCell.current) {
-          handlePointerUp(e);
-        }
-      }}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseUp}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       {board.map((row, r) =>
         row.map((cell, c) => (
