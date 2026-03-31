@@ -1,26 +1,29 @@
 import { memo } from 'react';
 
-const PAPRIKA_BG = {
-  green: '#E8F5E9',
-  yellow: '#FFFDE7',
-  orange: '#FFF3E0',
-  red: '#FFEBEE',
+// 파프리카 색상 설정
+const PAPRIKA_CONFIG = {
+  green:  { fill: '#8BC78F', highlight: '#B5DFB8', stem: '#4A8C4E', numColor: '#1B5E20', bg: '#EDF7EE' },
+  yellow: { fill: '#F5D76E', highlight: '#FAE89D', stem: '#C8A415', numColor: '#F57F17', bg: '#FDFAED' },
+  orange: { fill: '#F0A858', highlight: '#F5C48A', stem: '#C07020', numColor: '#E65100', bg: '#FDF3E8' },
+  red:    { fill: '#E88080', highlight: '#F0ABAB', stem: '#B83030', numColor: '#B71C1C', bg: '#FDECEC' },
 };
 
-const NUMBER_COLORS = {
-  1: '#78909C', 2: '#5C6BC0', 3: '#26A69A', 4: '#FFA726',
-  5: '#EF5350', 6: '#AB47BC', 7: '#EC407A', 8: '#42A5F5', 9: '#8D6E63',
-};
+// 숫자 색 - 진한 갈색
+const NUM_COLOR = '#5D4037';
 
-function PaprikaIcon({ type, size = 16 }) {
-  const colors = { green: '#4CAF50', yellow: '#FDD835', orange: '#FB8C00', red: '#E53935' };
-  const color = colors[type] || '#4CAF50';
+function BigPaprika({ type }) {
+  const cfg = PAPRIKA_CONFIG[type];
+  if (!cfg) return null;
   return (
-    <svg viewBox="0 0 24 24" width={size} height={size} className="paprika-icon">
-      <path d="M12 2 C11 2, 10 3, 10 4 L14 4 C14 3, 13 2, 12 2Z" fill="#388E3C" />
-      <line x1="12" y1="1" x2="12" y2="3" stroke="#2E7D32" strokeWidth="1.2" strokeLinecap="round" />
-      <path d="M7 5 C6 5, 5 7, 5 10 C5 16, 8 20, 10 21 C11 21.5, 13 21.5, 14 21 C16 20, 19 16, 19 10 C19 7, 18 5, 17 5Z" fill={color} />
-      <path d="M9 7 C8.5 9, 8 12, 9 15" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    <svg viewBox="0 0 40 40" className="gp-paprika-bg" aria-hidden="true">
+      {/* 꼭지 */}
+      <path d="M20 3 C18.5 3, 17 4.5, 17 6 L23 6 C23 4.5, 21.5 3, 20 3Z" fill={cfg.stem} />
+      <line x1="20" y1="1.5" x2="20" y2="4.5" stroke={cfg.stem} strokeWidth="1.5" strokeLinecap="round" />
+      {/* 몸통 - 통통하게 */}
+      <path d="M8 10 C5 10, 3 15, 3 21 C3 30, 8 36, 14 38 C16.5 39, 23.5 39, 26 38 C32 36, 37 30, 37 21 C37 15, 35 10, 32 10Z" fill={cfg.fill} />
+      {/* 하이라이트 */}
+      <path d="M13 14 C11 18, 10.5 24, 12 30" stroke={cfg.highlight} strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.6" />
+      <ellipse cx="14" cy="16" rx="3" ry="4" fill={cfg.highlight} opacity="0.3" />
     </svg>
   );
 }
@@ -28,19 +31,17 @@ function PaprikaIcon({ type, size = 16 }) {
 function CellComponent({ cell, isInBox, isMatch, isTapStart }) {
   if (!cell.alive) return <div className="gp-cell gp-cell-dead" />;
 
-  const bg = cell.paprika ? PAPRIKA_BG[cell.paprika] : undefined;
+  const hasPaprika = !!cell.paprika;
+  const cfg = hasPaprika ? PAPRIKA_CONFIG[cell.paprika] : null;
+  const bgStyle = cfg ? { background: cfg.bg } : undefined;
 
   return (
     <div
       className={`gp-cell gp-cell-alive ${isInBox ? 'gp-cell-inbox' : ''} ${isMatch ? 'gp-cell-match' : ''} ${isTapStart ? 'gp-cell-tap-start' : ''}`}
-      style={bg ? { background: bg } : undefined}
+      style={bgStyle}
     >
-      {cell.paprika && (
-        <div className="gp-cell-paprika">
-          <PaprikaIcon type={cell.paprika} />
-        </div>
-      )}
-      <span className="gp-cell-number" style={{ color: NUMBER_COLORS[cell.number] }}>
+      {hasPaprika && <BigPaprika type={cell.paprika} />}
+      <span className="gp-cell-number" style={{ color: NUM_COLOR }}>
         {cell.number}
       </span>
     </div>

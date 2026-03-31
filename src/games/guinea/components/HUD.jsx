@@ -22,15 +22,6 @@ export default function HUD({ score, timeLeft, gameState, boxSum, boxCount }) {
           {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
         </span>
       </div>
-      {boxCount > 0 && (
-        <motion.div
-          className={`gp-hud-sum ${boxSum === 10 ? 'sum-match' : boxSum > 10 ? 'sum-over' : ''}`}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          합: {boxSum}
-        </motion.div>
-      )}
       {gameState === 'ended' && (
         <motion.div
           className="gp-hud-status"

@@ -14,7 +14,7 @@ function getLayout() {
 const PAPRIKA_TYPES = [null, 'green', 'yellow', 'orange', 'red'];
 const PAPRIKA_POINTS = { null: 1, green: 2, yellow: 3, orange: 4, red: 5 };
 
-const PAPRIKA_RATES = [0.60, 0.15, 0.12, 0.08, 0.05];
+const PAPRIKA_RATES = [0.80, 0.08, 0.06, 0.04, 0.02];
 
 // 시드 기반 난수 (mulberry32)
 function seededRandom(seed) {

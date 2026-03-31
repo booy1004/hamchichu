@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import useAppleLogic from './hooks/useAppleLogic';
 import useGuineaRecords from './hooks/useGuineaRecords';
+import useSound from './hooks/useSound';
 import Board from './components/Board';
 import HUD from './components/HUD';
 import GuineaPig from './components/GuineaPig';
@@ -21,6 +22,14 @@ export default function GuineaPigGame() {
   } = useAppleLogic();
 
   const { records, addRecord, clearRecords } = useGuineaRecords();
+  const { play: playSound } = useSound();
+
+  // 점수 올라가면 소리 재생
+  useEffect(() => {
+    if (score > 0 && gameState === 'playing') {
+      playSound();
+    }
+  }, [score]);
 
   useEffect(() => {
     if (gameState === 'ended' && score > 0) {
@@ -104,6 +113,8 @@ export default function GuineaPigGame() {
       </div>
 
       <Overlay gameState={gameState} score={score} onReset={resetGame} />
+
+      <p className="gp-credits">🔊 Guinea pig sound: RICHERlandTV</p>
     </div>
   );
 }
