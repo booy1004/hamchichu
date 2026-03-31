@@ -12,9 +12,11 @@ import './guinea.css';
 
 export default function GuineaPigGame() {
   const {
-    board, gameState, score, timeLeft, rows, cols,
+    board, gameState, score, timeLeft, rows, cols, tapFirst,
     dragStart, dragEnd, getBoxSum, getBoxCells,
-    onDragStart, onDragMove, onDragEnd, resetGame,
+    onDragStart, onDragMove, onDragEnd,
+    onTapCell, onTapPreview, cancelTap,
+    resetGame,
     startWithSeed, generateChallengeCode, parseChallengeCode,
   } = useAppleLogic();
 
@@ -73,9 +75,13 @@ export default function GuineaPigGame() {
             dragStart={dragStart}
             dragEnd={dragEnd}
             boxSum={boxSum}
+            tapFirst={tapFirst}
             onDragStart={onDragStart}
             onDragMove={onDragMove}
             onDragEnd={onDragEnd}
+            onTapCell={onTapCell}
+            onTapPreview={onTapPreview}
+            cancelTap={cancelTap}
           />
         </div>
       </div>
@@ -94,7 +100,7 @@ export default function GuineaPigGame() {
         <span>🖱️ 드래그로 사각형 박스를 그려서 합이 10이 되면 사라져요!</span>
       </div>
       <div className="gp-help help-mobile">
-        <span>👆 터치 드래그로 박스를 그려서 합이 10이 되면 사라져요!</span>
+        <span>👆 첫 번째 셀 탭 → 두 번째 셀 탭 → 사각형 안의 합이 10이면 사라져요!</span>
       </div>
 
       <Overlay gameState={gameState} score={score} onReset={resetGame} />

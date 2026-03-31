@@ -69,9 +69,12 @@ export default function useAppleLogic() {
   const [rows] = useState(layout.rows);
   const [cols] = useState(layout.cols);
 
-  // 드래그 박스 (화면 좌표가 아닌 셀 좌표)
+  // 드래그 박스 (셀 좌표)
   const [dragStart, setDragStart] = useState(null); // {r, c}
   const [dragEnd, setDragEnd] = useState(null);     // {r, c}
+
+  // 모바일 탭 모드: 첫 탭 → tapFirst, 두 번째 탭 → 사각형 판정
+  const [tapFirst, setTapFirst] = useState(null); // {r, c}
 
   const timerRef = useRef(null);
 
@@ -152,7 +155,6 @@ export default function useAppleLogic() {
     const sum = cells.reduce((s, { cell }) => s + cell.number, 0);
 
     if (sum === 10 && cells.length > 0) {
-      // 매치 성공! 셀 제거
       setBoard(prev => {
         const newBoard = prev.map(row => row.map(cell => ({ ...cell })));
         for (const { r, c } of cells) {
@@ -161,10 +163,9 @@ export default function useAppleLogic() {
         return newBoard;
       });
 
-      // 점수: 기본 개당 1점 + 파프리카 보너스
       const basePoints = cells.length;
       const bonusPoints = cells.reduce((s, { cell }) => {
-        return s + (PAPRIKA_POINTS[cell.paprika] - 1); // 기본 1점은 이미 basePoints에 포함
+        return s + (PAPRIKA_POINTS[cell.paprika] - 1);
       }, 0);
       setScore(prev => prev + basePoints + bonusPoints);
     }
@@ -172,6 +173,62 @@ export default function useAppleLogic() {
     setDragStart(null);
     setDragEnd(null);
   }, [dragStart, dragEnd, getBoxCells]);
+
+  // 모바일 탭 모드: 셀 탭
+  const onTapCell = useCallback((r, c) => {
+    if (gameState === 'ended') return;
+    if (gameState === 'ready') {
+      setGameState('playing');
+      startTimer();
+    }
+
+    if (!tapFirst) {
+      // 첫 번째 탭
+      setTapFirst({ r, c });
+      setDragStart({ r, c });
+      setDragEnd({ r, c });
+    } else {
+      // 두 번째 탭 → 사각형 판정
+      const start = tapFirst;
+      const end = { r, c };
+      const cells = getBoxCells(start, end);
+      const sum = cells.reduce((s, { cell }) => s + cell.number, 0);
+
+      if (sum === 10 && cells.length > 0) {
+        setBoard(prev => {
+          const newBoard = prev.map(row => row.map(cell => ({ ...cell })));
+          for (const { r: cr, c: cc } of cells) {
+            newBoard[cr][cc] = { ...newBoard[cr][cc], alive: false };
+          }
+          return newBoard;
+        });
+
+        const basePoints = cells.length;
+        const bonusPoints = cells.reduce((s, { cell }) => {
+          return s + (PAPRIKA_POINTS[cell.paprika] - 1);
+        }, 0);
+        setScore(prev => prev + basePoints + bonusPoints);
+      }
+
+      setTapFirst(null);
+      setDragStart(null);
+      setDragEnd(null);
+    }
+  }, [gameState, tapFirst, getBoxCells, startTimer]);
+
+  // 탭 모드에서 두 번째 셀 위에 호버(프리뷰)
+  const onTapPreview = useCallback((r, c) => {
+    if (!tapFirst) return;
+    setDragStart(tapFirst);
+    setDragEnd({ r, c });
+  }, [tapFirst]);
+
+  // 탭 취소
+  const cancelTap = useCallback(() => {
+    setTapFirst(null);
+    setDragStart(null);
+    setDragEnd(null);
+  }, []);
 
   const resetGame = useCallback(() => {
     stopTimer();
@@ -183,6 +240,7 @@ export default function useAppleLogic() {
     setTimeLeft(TOTAL_TIME);
     setDragStart(null);
     setDragEnd(null);
+    setTapFirst(null);
   }, [stopTimer]);
 
   // 대결 모드
@@ -195,6 +253,7 @@ export default function useAppleLogic() {
     setTimeLeft(TOTAL_TIME);
     setDragStart(null);
     setDragEnd(null);
+    setTapFirst(null);
   }, [stopTimer]);
 
   const generateChallengeCode = useCallback(() => {
@@ -212,9 +271,11 @@ export default function useAppleLogic() {
 
   return {
     board, gameState, score, timeLeft,
-    rows, cols,
+    rows, cols, tapFirst,
     dragStart, dragEnd, getBoxSum, getBoxCells,
-    onDragStart, onDragMove, onDragEnd, resetGame,
+    onDragStart, onDragMove, onDragEnd,
+    onTapCell, onTapPreview, cancelTap,
+    resetGame,
     startWithSeed, generateChallengeCode, parseChallengeCode,
     totalTime: TOTAL_TIME,
   };

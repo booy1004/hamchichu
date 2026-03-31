@@ -1,10 +1,25 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useState, useEffect } from 'react';
 import Cell from './Cell';
 
-export default function Board({ board, rows, cols, dragStart, dragEnd, boxSum, onDragStart, onDragMove, onDragEnd }) {
-  const boardRef = useRef(null);
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
+}
 
-  // 셀이 드래그 박스 안에 있는지 체크
+export default function Board({
+  board, rows, cols, dragStart, dragEnd, boxSum, tapFirst,
+  onDragStart, onDragMove, onDragEnd,
+  onTapCell, onTapPreview, cancelTap,
+}) {
+  const boardRef = useRef(null);
+  const isMobile = useIsMobile();
+
   const isInBox = useCallback((r, c) => {
     if (!dragStart || !dragEnd) return false;
     const minR = Math.min(dragStart.r, dragEnd.r);
@@ -15,8 +30,9 @@ export default function Board({ board, rows, cols, dragStart, dragEnd, boxSum, o
   }, [dragStart, dragEnd, board]);
 
   const isMatch = dragStart && dragEnd && boxSum === 10;
+  const isTapStart = (r, c) => tapFirst && tapFirst.r === r && tapFirst.c === c;
 
-  // 포인터 이벤트에서 셀 좌표 계산
+  // PC: 포인터 이벤트에서 셀 좌표 계산
   const getCellFromEvent = useCallback((e) => {
     if (!boardRef.current) return null;
     const rect = boardRef.current.getBoundingClientRect();
@@ -31,22 +47,40 @@ export default function Board({ board, rows, cols, dragStart, dragEnd, boxSum, o
     return { r, c };
   }, [rows, cols]);
 
+  // PC 드래그 핸들러
   const handlePointerDown = useCallback((e) => {
+    if (isMobile) return;
     e.preventDefault();
     const pos = getCellFromEvent(e);
     if (pos) onDragStart(pos.r, pos.c);
-  }, [getCellFromEvent, onDragStart]);
+  }, [getCellFromEvent, onDragStart, isMobile]);
 
   const handlePointerMove = useCallback((e) => {
+    if (isMobile) return;
     e.preventDefault();
     const pos = getCellFromEvent(e);
     if (pos) onDragMove(pos.r, pos.c);
-  }, [getCellFromEvent, onDragMove]);
+  }, [getCellFromEvent, onDragMove, isMobile]);
 
   const handlePointerUp = useCallback((e) => {
+    if (isMobile) return;
     e.preventDefault();
     onDragEnd();
-  }, [onDragEnd]);
+  }, [onDragEnd, isMobile]);
+
+  // 모바일 탭 핸들러
+  const handleCellTap = useCallback((r, c) => {
+    if (!isMobile) return;
+    onTapCell(r, c);
+  }, [isMobile, onTapCell]);
+
+  // 모바일: 탭 후 다른 셀 위에서 프리뷰
+  const handleCellTouchMove = useCallback((e) => {
+    if (!isMobile || !tapFirst) return;
+    const touch = e.touches[0];
+    const pos = getCellFromEvent({ clientX: touch.clientX, clientY: touch.clientY });
+    if (pos) onTapPreview(pos.r, pos.c);
+  }, [isMobile, tapFirst, getCellFromEvent, onTapPreview]);
 
   return (
     <div
@@ -60,14 +94,7 @@ export default function Board({ board, rows, cols, dragStart, dragEnd, boxSum, o
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
-      onTouchStart={handlePointerDown}
-      onTouchMove={(e) => {
-        e.preventDefault();
-        const touch = e.touches[0];
-        const pos = getCellFromEvent({ clientX: touch.clientX, clientY: touch.clientY });
-        if (pos) onDragMove(pos.r, pos.c);
-      }}
-      onTouchEnd={handlePointerUp}
+      onTouchMove={handleCellTouchMove}
     >
       {board.map((row, r) =>
         row.map((cell, c) => (
@@ -76,6 +103,8 @@ export default function Board({ board, rows, cols, dragStart, dragEnd, boxSum, o
             cell={cell}
             isInBox={isInBox(r, c)}
             isMatch={isInBox(r, c) && isMatch}
+            isTapStart={isTapStart(r, c)}
+            onTap={() => handleCellTap(r, c)}
           />
         ))
       )}

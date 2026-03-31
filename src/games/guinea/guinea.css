@@ -131,6 +131,12 @@
   background: linear-gradient(145deg, #FFEBEE, #FFCDD2) !important;
 }
 
+.gp-cell-tap-start {
+  border-color: #FF6F00 !important;
+  box-shadow: 0 0 0 3px rgba(255,111,0,0.4);
+  background: linear-gradient(145deg, #FFF8E1, #FFECB3) !important;
+}
+
 .gp-cell-paprika {
   position: absolute; top: 1px; right: 1px;
   opacity: 0.6; pointer-events: none;
@@ -379,4 +385,9 @@
   .gp-help { flex-direction: column; gap: 4px; align-items: center; }
   .gp-legend { font-size: 0.75rem; gap: 8px; }
   .paprika-icon { width: 12px; height: 12px; }
+
+  /* 모바일: 탭 모드이므로 스크롤 허용 */
+  .gp-board-wrapper { touch-action: manipulation; }
+  .gp-board { touch-action: manipulation; }
+  .gp-cell { touch-action: manipulation; }
 }
