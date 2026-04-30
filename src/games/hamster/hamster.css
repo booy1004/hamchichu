@@ -731,6 +731,8 @@
   .hamster { width: 70px; height: 80px; }
   .hamster-body { width: 56px; height: 64px; }
   .hamster-container { height: 90px; min-height: unset; overflow: hidden; }
+  .hamster-speech-wrap { display: none; }
+  .hamster-cheek-status { display: none; }
   .hud { gap: 12px; padding: 8px 16px; }
   .help-text { flex-direction: column; gap: 4px; align-items: center; }
   .board-wrapper {
