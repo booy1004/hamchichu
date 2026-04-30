@@ -726,7 +726,7 @@
   .title { font-size: 1.4rem; }
   .cell { width: 24px; height: 24px; font-size: 0.75rem; }
   .cell-number { font-size: 0.8rem; }
-  .game-area { flex-direction: column; align-items: center; }
+  .game-area { flex-direction: column; align-items: center; width: 100%; }
   .hamster-panel { flex-direction: row; gap: 12px; height: 100px; overflow: hidden; align-items: center; flex-shrink: 0; }
   .hamster { width: 70px; height: 80px; }
   .hamster-body { width: 56px; height: 64px; }
@@ -734,10 +734,12 @@
   .hud { gap: 12px; padding: 8px 16px; }
   .help-text { flex-direction: column; gap: 4px; align-items: center; }
   .board-wrapper {
-    max-width: calc(100vw - 24px);
+    max-width: calc(100vw - 32px);
     max-height: 70vh;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+    padding: 8px;
+    box-sizing: border-box;
   }
   .board {
     min-width: max-content;
