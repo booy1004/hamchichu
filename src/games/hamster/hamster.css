@@ -724,8 +724,8 @@
 /* 반응형 */
 @media (max-width: 600px) {
   .title { font-size: 1.4rem; }
-  .cell { width: 20px; height: 20px; font-size: 0.7rem; }
-  .cell-number { font-size: 0.75rem; }
+  .cell { width: 24px; height: 24px; font-size: 0.75rem; }
+  .cell-number { font-size: 0.8rem; }
   .game-area { flex-direction: column; align-items: center; }
   .hamster-panel { flex-direction: row; gap: 12px; height: 100px; overflow: hidden; align-items: center; flex-shrink: 0; }
   .hamster { width: 70px; height: 80px; }
@@ -735,6 +735,21 @@
   .hamster-cheek-status { display: none; }
   .hud { gap: 12px; padding: 8px 16px; }
   .help-text { flex-direction: column; gap: 4px; align-items: center; }
+  .app { padding: 16px 0; }
+  .board-wrapper {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 16px;
+    box-sizing: border-box;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .board {
+    width: max-content;
+    margin: 0 auto;
+  }
 }
 
 /* 더블클릭 가능한 숫자 칸 */

@@ -7,16 +7,6 @@ const DIFFICULTIES = {
   hard: { rows: 16, cols: 30, mines: 99 },
 };
 
-// 모바일에서 가로가 긴 보드는 세로로 뒤집기
-const isMobile = typeof window !== 'undefined' && window.innerWidth <= 600;
-const getDifficulty = (key) => {
-  const d = DIFFICULTIES[key];
-  if (isMobile && d.cols > d.rows) {
-    return { rows: d.cols, cols: d.rows, mines: d.mines };
-  }
-  return d;
-};
-
 function createBoard(rows, cols) {
   return Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => ({
@@ -73,7 +63,7 @@ function placeMines(board, rows, cols, mines, excludeR, excludeC, seed) {
 }
 
 export default function useGameLogic(difficulty = 'easy') {
-  const { rows, cols, mines } = getDifficulty(difficulty);
+  const { rows, cols, mines } = DIFFICULTIES[difficulty];
   const [board, setBoard] = useState(() => createBoard(rows, cols));
   const [gameState, setGameState] = useState('ready'); // ready | playing | won | lost
   const [flagCount, setFlagCount] = useState(0);
@@ -296,7 +286,7 @@ export default function useGameLogic(difficulty = 'easy') {
 
 
   const resetGame = useCallback((newDifficulty) => {
-    const d = getDifficulty(newDifficulty || difficulty);
+    const d = DIFFICULTIES[newDifficulty || difficulty];
     stopTimer();
     setBoard(createBoard(d.rows, d.cols));
     setGameState('ready');
@@ -310,7 +300,7 @@ export default function useGameLogic(difficulty = 'easy') {
 
   // 대결 모드: 시드로 게임 시작
   const startWithSeed = useCallback((seed, newDifficulty) => {
-    const d = getDifficulty(newDifficulty || difficulty);
+    const d = DIFFICULTIES[newDifficulty || difficulty];
     stopTimer();
     setBoard(createBoard(d.rows, d.cols));
     setGameState('ready');
