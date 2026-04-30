@@ -282,9 +282,6 @@
 /* 반응형 */
 @media (max-width: 600px) {
   [data-theme="pixel"] .title { font-size: 0.85rem; }
-  [data-theme="pixel"] .cell {
-    width: var(--cell-size, 28px);
-    height: var(--cell-size, 28px);
-  }
+  [data-theme="pixel"] .cell { width: 28px; height: 28px; }
   [data-theme="pixel"] .cell-number { font-size: 0.7rem; }
 }
