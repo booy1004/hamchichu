@@ -340,6 +340,7 @@
   align-items: center;
   gap: 8px;
   position: relative;
+  padding-top: 36px;
 }
 
 .hamster-speech {
@@ -350,8 +351,12 @@
   font-weight: bold;
   color: var(--text-dark);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   white-space: nowrap;
+  z-index: 5;
 }
 .hamster-speech::after {
   content: '';
