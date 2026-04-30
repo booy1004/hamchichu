@@ -135,10 +135,15 @@
   gap: 2px;
 }
 
+.board-scale-wrapper {
+  width: 100%;
+  overflow: visible;
+}
+
 /* 셀 */
 .cell {
-  width: 36px;
-  height: 36px;
+  width: var(--cell-size, 36px);
+  height: var(--cell-size, 36px);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -724,11 +729,7 @@
 /* 반응형 */
 @media (max-width: 600px) {
   .title { font-size: 1.4rem; }
-  .cell {
-    width: var(--cell-size, 24px);
-    height: var(--cell-size, 24px);
-    font-size: 0.75rem;
-  }
+  .cell { width: var(--cell-size, 24px); height: var(--cell-size, 24px); font-size: 0.75rem; }
   .cell-number { font-size: 0.8rem; }
   .game-area { flex-direction: column; align-items: center; width: 100%; }
   .hamster-panel { flex-direction: row; gap: 12px; height: 100px; overflow: hidden; align-items: center; flex-shrink: 0; }
@@ -743,11 +744,11 @@
     max-width: calc(100vw - 32px);
     padding: 8px;
     box-sizing: border-box;
+  }
+  .board-scale-wrapper {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-  }
-  .board {
-    width: max-content;
+    width: 100%;
   }
 }
 
