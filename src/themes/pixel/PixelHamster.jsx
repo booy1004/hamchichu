@@ -172,41 +172,43 @@ export default function PixelHamster({ gameState, lastAction, revealedCount, tot
 
   return (
     <div className="hamster-container">
-      <AnimatePresence mode="wait">
-        {expression === 'eating' && (
-          <motion.div
-            key="px-eating"
-            className="hamster-speech"
-            initial={{ opacity: 0, y: 10, scale: 0.5 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ duration: 0.3 }}
-          >
-            왁왁왁!
-          </motion.div>
-        )}
-        {expression === 'shocked' && (
-          <motion.div
-            key="px-shocked"
-            className="hamster-speech speech-scared"
-            initial={{ opacity: 0, scale: 2 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: 'spring', stiffness: 500 }}
-          >
-            끼이익!!
-          </motion.div>
-        )}
-        {expression === 'clear' && (
-          <motion.div
-            key="px-clear"
-            className="hamster-speech speech-happy"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            뿌듯! 👍
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="hamster-speech-wrap">
+        <AnimatePresence mode="wait">
+          {expression === 'eating' && (
+            <motion.div
+              key="px-eating"
+              className="hamster-speech"
+              initial={{ opacity: 0, y: 10, scale: 0.5 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.3 }}
+            >
+              왁왁왁!
+            </motion.div>
+          )}
+          {expression === 'shocked' && (
+            <motion.div
+              key="px-shocked"
+              className="hamster-speech speech-scared"
+              initial={{ opacity: 0, scale: 2 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 500 }}
+            >
+              끼이익!!
+            </motion.div>
+          )}
+          {expression === 'clear' && (
+            <motion.div
+              key="px-clear"
+              className="hamster-speech speech-happy"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              뿌듯! 👍
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       <motion.div
         style={{ display: 'flex', justifyContent: 'center' }}
