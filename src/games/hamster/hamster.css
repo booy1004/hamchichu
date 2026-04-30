@@ -343,15 +343,6 @@
   min-height: 160px;
 }
 
-.hamster-speech-wrap {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
-  pointer-events: none;
-}
-
 .hamster-speech {
   background: white;
   padding: 6px 14px;
@@ -360,7 +351,13 @@
   font-weight: bold;
   color: var(--text-dark);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
   white-space: nowrap;
+  z-index: 5;
+  pointer-events: none;
 }
 .hamster-speech::after {
   content: '';
@@ -730,10 +727,10 @@
   .cell { width: 24px; height: 24px; font-size: 0.75rem; }
   .cell-number { font-size: 0.8rem; }
   .game-area { flex-direction: column; align-items: center; }
-  .hamster-panel { flex-direction: row; gap: 12px; min-height: 100px; align-items: center; }
+  .hamster-panel { flex-direction: row; gap: 12px; height: 100px; overflow: hidden; align-items: center; flex-shrink: 0; }
   .hamster { width: 70px; height: 80px; }
   .hamster-body { width: 56px; height: 64px; }
-  .hamster-container { min-height: 90px; }
+  .hamster-container { height: 90px; min-height: unset; overflow: hidden; }
   .hud { gap: 12px; padding: 8px 16px; }
   .help-text { flex-direction: column; gap: 4px; align-items: center; }
   .board-wrapper {
